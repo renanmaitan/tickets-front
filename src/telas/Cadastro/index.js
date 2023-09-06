@@ -2,8 +2,6 @@ import React, {useState} from "react"
 
 import { View, Text, TextInput, TouchableOpacity, ScrollView, FlatList } from "react-native"
 
-import { TextInputMask } from 'react-native-masked-text'
-
 import styles from "./style"
 import Title from "./Title/"
 import Logo from "./Logo"
@@ -78,43 +76,31 @@ export default function Login({navigation}) {
                     onChangeText={(value) => handleForm('email', value)}
                     autoCapitalize="none"
                     />
-                    <TextInputMask
+                    <TextInput
                     style={styles.input}
-                    type={'cel-phone'}
-                    options={{
-                    maskType: 'BRL',
-                    withDDD: true,
-                    dddMask: '(99) ',
-                    }}
+                    //type={'cel-phone'}
                     placeholder="Telefone"
                     onChangeText={(value) => handleForm('phone', value)}
                     keyboardType="numeric"
                     />
-                    <TextInputMask
+                    <TextInput
                     style={styles.input}
-                    type={"cpf"}
+                    //type={"cpf"}
                     name="cpf"
                     placeholder="CPF"
                     onChangeText={(value) => handleForm('cpf', value)}
+                    keyboardType="numeric"
                     />
-                    <TextInputMask
+                    <TextInput
                     style={styles.input}
-                    type={'datetime'}
-                    options={{
-                    format: 'DD/MM/YYYY',
-                    }}
+                    //type={'datetime'}
                     placeholder="Data de nascimento"
                     onChangeText={(value) => handleForm('birthDate', value)}
                     keyboardType="numeric"
                     />
-                    <TextInputMask
+                    <TextInput
                     style={styles.input}
-                    type={'zip-code'}
-                    options={{
-                    maskType: 'BRL',
-                    withDDD: true,
-                    dddMask: '(99) ',
-                    }}
+                    //type={'zip-code'}
                     placeholder="CEP"
                     onChangeText={(value) => handleForm('cep', value)}
                     keyboardType="numeric"
@@ -147,7 +133,7 @@ export default function Login({navigation}) {
                     >Já possui conta? Logar</Text>
                 </View>
                 <View style={styles.copyright}>
-                    <Text style={styles.copyrightText}>© 2023 - Todos os direitos reservados - ConnectMed</Text>
+                    <Text style={styles.copyrightText}>© 2023 - Todos os direitos reservados - ITEMM</Text>
                 </View>
             </View>
         </ScrollView>

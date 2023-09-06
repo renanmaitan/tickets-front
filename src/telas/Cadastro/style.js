@@ -1,28 +1,33 @@
 import { StyleSheet } from "react-native";
 
+// #86B862 verde claro
+// #374C2C verde escuro
+// #F0F6EF verde bem claro
+// #182955 azul escuro
+// #FEFEFE branco
+
 const styles = StyleSheet.create({
     container: {
         width: '100%',
         alignItems: 'center',
-        justifyContent: 'center',
     },
     input: {
         borderWidth: 1,
-        borderColor: '#086972',
-        borderRadius: 20,
+        borderColor: '#182955',
+        borderRadius: 10,
         padding: "3.5%",
         marginBottom: "3.5%",
         width: '100%',
-        backgroundColor: '#F2F2F2',
+        backgroundColor: '#FEFEFE',
         paddingStart: "10%",
     },
     boxInput:{
-        width: '75%',
+        width: '80%',
     },
     boxButton:{
         marginBottom: "3%",
         marginTop: "3%",
-        width: '40%',
+        width: '65%',
     },
     error:{
         color: 'red',
@@ -35,7 +40,7 @@ const styles = StyleSheet.create({
     },
     message:{
         textDecorationLine: 'underline',
-        color: '#086972',
+        color: '#182955',
         marginVertical: '1%',
     },
     button:{
@@ -43,11 +48,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         padding: "7%",
-        backgroundColor: '#086972',
+        backgroundColor: '#182955',
         borderRadius: 20,
     },
     textButton:{
-        color: '#FFF',
+        color: '#FEFEFE',
         fontFamily: 'sans-serif-light',
         fontWeight: 'bold',
         fontSize: 16,
@@ -65,11 +70,11 @@ const styles = StyleSheet.create({
         aspectRatio: 1,
     },
     scrollview: {
-        backgroundColor: '#DFEDEB',
+        backgroundColor: '#F0F6EF',
     },
     copyright: {
-        position: 'absolute', // Use absolute em vez de fixed
-        bottom: 10,
+        position: 'absolute',
+        bottom: 15,
         width: '100%',
         alignItems: 'center',
         justifyContent: 'center',

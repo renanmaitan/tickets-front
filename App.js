@@ -13,7 +13,7 @@ const Stack = createStackNavigator()
 export default function App() {
   return (
     <NavigationContainer>
-      <StatusBar backgroundColor="#086972" />
+      <StatusBar backgroundColor="#182955" />
       <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Login" component={Login} />
@@ -21,7 +21,7 @@ export default function App() {
         options={{ 
           headerShown: true,
           headerStyle: styles.header,
-          headerTintColor: '#FFF',
+          headerTintColor: '#FEFEFE',
         }}
         name="Cadastro" component={Cadastro}
         />
@@ -32,6 +32,6 @@ export default function App() {
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: "#086972",
+    backgroundColor: "#182955",
   },
 })

@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
         fontSize: 30,
         fontWeight: 'bold',
         fontFamily: 'sans-serif-light',
-        color: 'black',
+        color: '#374C2C',
     },
     boxTitle:{
         alignItems: 'center',
