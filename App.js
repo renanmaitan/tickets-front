@@ -1,37 +1,18 @@
 import React from "react"
 
 import { NavigationContainer } from "@react-navigation/native"
-import { createStackNavigator } from "@react-navigation/stack"
-import { StatusBar, StyleSheet } from "react-native"
+import { StatusBar } from "react-native"
 
-import Home from "./src/telas/Home/"
-import Login from "./src/telas/Login/"
-import Cadastro from "./src/telas/Cadastro/"
-
-const Stack = createStackNavigator()
+import {AuthProvider} from "./src/contexts/auth"
+import Routes from "./src/routes"
 
 export default function App() {
   return (
     <NavigationContainer>
       <StatusBar backgroundColor="#182955" />
-      <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen 
-        options={{ 
-          headerShown: true,
-          headerStyle: styles.header,
-          headerTintColor: '#FEFEFE',
-        }}
-        name="Cadastro" component={Cadastro}
-        />
-      </Stack.Navigator>
+      <AuthProvider>
+        <Routes />
+      </AuthProvider>
     </NavigationContainer>
   )
 }
-
-const styles = StyleSheet.create({
-  header: {
-    backgroundColor: "#182955",
-  },
-})

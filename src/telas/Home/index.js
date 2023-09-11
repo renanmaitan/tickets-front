@@ -1,11 +1,17 @@
-import React from "react";
-
-import { Text, View } from "react-native";
+import React, {useContext} from "react";
+import AuthContext from "../../contexts/auth";
+import { Button, View } from "react-native";
 
 export default function Login() {
+    const { signOut } = useContext(AuthContext);
+
+    function handleSignOut() {
+        signOut();
+    }
+
     return (
         <View>
-        <Text>Logado</Text>
+            <Button title="Sign Out" onPress={handleSignOut} />
         </View>
     );
-    }
+}

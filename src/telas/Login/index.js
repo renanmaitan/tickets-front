@@ -1,10 +1,11 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 
 import { View, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from "react-native"
 
 import styles from "./style"
 import Title from "./Title/"
 import Logo from "./Logo"
+import AuthContext from "../../contexts/auth"
 
 //instalar o react-native-vector-icons
 //npm install react-native-vector-icons
@@ -15,21 +16,26 @@ export default function Login({ navigation }) {
     const [user, setUser] = useState(null)
     const [password, setPassword] = useState(null)
     const [error, setError] = useState(null)
+    const { signed, signIn } = useContext(AuthContext)
 
-
-    function validation() {
+    async function validation() {
         if (user == null || password == null) {
-            setError('Preencha os campos')
-        } else if (user == "" || password == "") {
-            setError('Preencha os campos')
+            setError('Preencha os campos');
+        } else if (user === "" || password === "") {
+            setError('Preencha os campos');
         } else if (user.indexOf(' ') >= 0 || password.indexOf(' ') >= 0) {
-            setError('Não use espaços em branco')
+            setError('Não use espaços em branco');
         } else {
             setError(null);
-            navigation.reset({
-                index: 0,
-                routes: [{ name: "Home" }],
-            })
+            try {
+                const response = await signIn({ username: user, password });
+                if (response === false) {
+                    setError('Usuário ou senha incorretos');
+                }
+            } catch (error) {
+                console.error(error);
+                setError('Erro na autenticação');
+            }
         }
     }
 
@@ -56,6 +62,7 @@ export default function Login({ navigation }) {
                         onChangeText={(text) => setPassword(text.replace(' ', ''))}
                         value={password}
                         style={styles.input}
+                        autoCapitalize="none"
                     />
                 </View>
                 <View style={styles.boxMessage}>
