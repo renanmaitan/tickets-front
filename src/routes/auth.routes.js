@@ -2,8 +2,8 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack"
 import { StyleSheet } from "react-native"
 
-import Login from "../telas/Login/"
-import Cadastro from "../telas/Cadastro/"
+import Login from "../screens/Login/"
+import Cadastro from "../screens/Cadastro/"
 
 const AuthStack = createStackNavigator()
 

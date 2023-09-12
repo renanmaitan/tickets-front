@@ -8,7 +8,9 @@ import AuthRoutes from "./auth.routes"
 export default function Routes() {
     const { signed } = useContext(AuthContext)
     return (
-        signed ? <AppRoutes /> : <AuthRoutes />
+        signed ? < AuthRoutes/> : <AppRoutes />
     )
 }
+
+
 
