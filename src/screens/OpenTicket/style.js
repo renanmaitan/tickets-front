@@ -29,10 +29,26 @@ const styles = StyleSheet.create({
         color: "#000",
     },
     label:{
-        textAlign: "left",
+        textAlign: "center",
+        width: "100%",
+    },
+    formBottom:{
+        width: "100%",
+        alignItems: "center",
+        marginTop: "10%",
+    },
+    button: {
         width: "90%",
-        marginLeft: "5%",
-    }
+        backgroundColor: "#182955",
+        borderRadius: 10,
+        margin: "2%",
+        padding: "4%",
+        alignItems: "center",
+    },
+    buttonText: {
+        color: "#FFF",
+        fontSize: 18,
+    },
 });
 
 export default styles;

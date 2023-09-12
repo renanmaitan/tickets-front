@@ -7,13 +7,6 @@ import styles from "./style";
 import Logo from "./Logo";
 
 export default function Home({navigation}) {
-
-    // const { signOut } = useContext(AuthContext);
-
-    // function handleSignOut() {
-    //     signOut();
-    // }
-
     return (
         <View style={styles.container}>
             <LinearGradient
@@ -38,6 +31,7 @@ export default function Home({navigation}) {
                         </LinearGradient>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.touchable}
+                    
                     >
                         <LinearGradient
                             start={{ x: 0.0, y: 0.0 }} end={{ x: 1.6, y: 1.6 }}

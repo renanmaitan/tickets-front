@@ -5,6 +5,7 @@ import { FontAwesome5 } from 'react-native-vector-icons';
 
 import Home from "../screens/Home"
 import OpenTicket from "../screens/OpenTicket";
+import Account from "../screens/Account";
 
 const AppStack = createStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -44,7 +45,7 @@ function Tabs() {
       />
       <Tab.Screen
         name="Minha Conta"
-        component={Home}
+        component={Account}
         options={{
           tabBarIcon: ({ color, size }) => (
             <FontAwesome5 name="user-cog" color={color} size={size} />
