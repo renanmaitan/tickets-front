@@ -31,7 +31,7 @@ export default function Home({navigation}) {
                         </LinearGradient>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.touchable}
-                    
+                    onPress={() => navigation.navigate('MyTickets')}
                     >
                         <LinearGradient
                             start={{ x: 0.0, y: 0.0 }} end={{ x: 1.6, y: 1.6 }}

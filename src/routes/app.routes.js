@@ -6,6 +6,7 @@ import { FontAwesome5 } from 'react-native-vector-icons';
 import Home from "../screens/Home"
 import OpenTicket from "../screens/OpenTicket";
 import Account from "../screens/Account";
+import MyTickets from "../screens/MyTickets";
 
 const AppStack = createStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -60,12 +61,18 @@ export default function AppRoutes() {
   return (
     <AppStack.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }}>
       <AppStack.Screen name="Home" component={Tabs} />
-      <AppStack.Screen name="OpenTicket" component={OpenTicket} options={{ 
-        headerShown: true, 
-        title: "Abrir Chamado", 
-        headerStyle: styles.header,  
+      <AppStack.Screen name="OpenTicket" component={OpenTicket} options={{
+        headerShown: true,
+        title: "Abrir Chamado",
+        headerStyle: styles.header,
         headerTintColor: '#FFF',
-        }}/>
+      }} />
+      <AppStack.Screen name="MyTickets" component={MyTickets} options={{
+        headerShown: true,
+        title: "Meus Chamados",
+        headerStyle: styles.header,
+        headerTintColor: '#FFF',
+      }} />
     </AppStack.Navigator>
   )
 }
