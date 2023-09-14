@@ -37,10 +37,11 @@ const styles = StyleSheet.create({
         color: "#F0F6EF",
     },
     cardBody: {
-        padding: "5%",
+        padding: "4%",
         borderBottomLeftRadius: 10,
         borderBottomRightRadius: 10,
         alignItems: "center",
+        marginBottom: "1%",
     },
 });
 

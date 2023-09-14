@@ -8,8 +8,7 @@ export async function createTicket({ ticket, access_token }) {
             },
             body: JSON.stringify(ticket)
         });
-
-        console.log("POST RESPONSE: "+JSON.stringify(response));
+        return response;
         
     } catch (error) {
         console.error(error);

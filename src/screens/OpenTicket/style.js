@@ -35,7 +35,6 @@ const styles = StyleSheet.create({
     formBottom:{
         width: "100%",
         alignItems: "center",
-        marginTop: "10%",
     },
     button: {
         width: "90%",
@@ -49,6 +48,15 @@ const styles = StyleSheet.create({
         color: "#FFF",
         fontSize: 18,
     },
+    alertContainer: {
+        width: "100%",
+        alignItems: "center",
+        marginTop: "3%",
+        marginBottom: "3%",
+    },
+    alert: {
+        color: "#FF0000",
+    }
 });
 
 export default styles;

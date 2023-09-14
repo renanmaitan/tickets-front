@@ -13,7 +13,7 @@ const Item = ({ item }) => (
             </View>
             <View style={styles.cardBody}>
                 <View style={{flexDirection: "row"}}><Text>Status: </Text><Text style={item.status=='Aberto'?{color: "yellow"}:(item.status=='Fechado'?{color: "red"}:{color: "green" })}>{item.status}</Text></View>
-                <Text>Título: {item.title}</Text>
+                <Text numberOfLines={1}>Título: {item.title}</Text>
                 <Text style={{textDecorationLine: "underline"}}>Clique no card para abrir o chamado</Text>
             </View>
         </View>

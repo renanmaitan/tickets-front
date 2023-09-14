@@ -1,15 +1,16 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 
-import { View, Text, ScrollView, TextInput, TouchableOpacity } from "react-native";
+import { View, Text, ScrollView, TextInput, TouchableOpacity, Alert } from "react-native";
 import styles from "./style";
 import AuthContext from "../../contexts/auth";
 
 import { createTicket } from "../../services/createTicket";
+import Loading from "../../Components/Loading";
 
-export default function OpenTicket() {
-
-    
+export default function OpenTicket({ navigation}) {
+    const [loading, setLoading] = useState(false);
     const { access_token } = useContext(AuthContext);
+    const [alert, setAlert] = useState("");
     const form = {
         ticket: {
             title: "",
@@ -26,7 +27,27 @@ export default function OpenTicket() {
     }
 
     async function handleCreateTicket() {
-        const response = await createTicket(form);
+        setLoading(true);
+        try{
+            const response = await createTicket(form);
+            if (response.status == 201) {
+                setAlert(null);
+                navigation.navigate("Home");
+                Alert.alert("Chamado criado com sucesso!");
+            }
+            else {
+                setAlert("Erro ao criar chamado!");
+            }
+            setLoading(false);
+        }
+        catch(error){
+            console.error(error);
+            setLoading(false);
+        }
+    }
+
+    if (loading) {
+        return <Loading />
     }
 
     return (
@@ -47,6 +68,7 @@ export default function OpenTicket() {
                     placeholder="Descreva seu problema" multiline={true}
                     />
                 </View>
+                <View style={styles.alertContainer}><Text style={styles.alert}>{alert}</Text></View>
                 <View style={styles.formBottom}>
                     <TouchableOpacity 
                     onPress={handleCreateTicket}

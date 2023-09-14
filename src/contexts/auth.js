@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Loading from "../Components/Loading";
 
 const AuthContext = createContext({});
 import * as auth from '../services/auth'
@@ -9,9 +10,10 @@ export function AuthProvider({ children }) {
 
     const [access_token, setAccessToken] = useState(null);
     const [refresh_token, setRefreshToken] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-    async function signIn({ username, password}) {
-        const response = await auth.signIn({ username, password});
+    async function signIn({ username, password }) {
+        const response = await auth.signIn({ username, password });
         if (response !== false) {
             setAccessToken(response.access_token);
             setRefreshToken(response.refresh_token);
@@ -31,6 +33,7 @@ export function AuthProvider({ children }) {
                 setAccessToken(storagedAccessToken);
                 setRefreshToken(storagedRefreshToken);
             }
+            setLoading(false);
         }
         loadStorageData();
     });
@@ -40,8 +43,12 @@ export function AuthProvider({ children }) {
         setAccessToken(null);
     }
 
+    if (loading) {
+        return <Loading />
+    }
+
     return (
-        <AuthContext.Provider value={{ signed: !!access_token, signIn, access_token, signOut, refresh_token}}>
+        <AuthContext.Provider value={{ signed: !!access_token, signIn, access_token, signOut, refresh_token }}>
             {children}
         </AuthContext.Provider>
     )

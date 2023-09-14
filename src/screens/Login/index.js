@@ -6,6 +6,7 @@ import styles from "./style"
 import Title from "./Title/"
 import Logo from "./Logo"
 import AuthContext from "../../contexts/auth"
+import Loading from "../../Components/Loading"
 
 //instalar o react-native-vector-icons
 //npm install react-native-vector-icons
@@ -17,6 +18,7 @@ export default function Login({ navigation }) {
     const [password, setPassword] = useState(null)
     const [error, setError] = useState(null)
     const { signed, signIn } = useContext(AuthContext)
+    const [loading, setLoading] = useState(false)
 
     async function validation() {
         if (user == null || password == null) {
@@ -27,16 +29,23 @@ export default function Login({ navigation }) {
             setError('Não use espaços em branco');
         } else {
             setError(null);
+            setLoading(true);
             try {
                 const response = await signIn({ username: user, password });
                 if (response === false) {
                     setError('Usuário ou senha incorretos');
                 }
+                setLoading(false);
             } catch (error) {
                 console.error(error);
                 setError('Erro na autenticação');
+                setLoading(false);
             }
         }
+    }
+
+    if (loading) {
+        return <Loading />
     }
 
     return (

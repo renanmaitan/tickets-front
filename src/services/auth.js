@@ -19,7 +19,6 @@ export async function signIn({ username, password }) {
             return false;
         }
     } catch (error) {
-        console.error(error);
         throw error;
     }
 }
