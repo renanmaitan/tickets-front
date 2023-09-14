@@ -51,6 +51,11 @@ function Tabs() {
           tabBarIcon: ({ color, size }) => (
             <FontAwesome5 name="user-cog" color={color} size={size} />
           ),
+          headerShown: true,
+          title: "Configurações da Conta",
+          headerStyle: styles.header,
+          headerTintColor: '#FFF',
+          tabBarLabel: "Minha Conta",   
         }}
       />
     </Tab.Navigator>
