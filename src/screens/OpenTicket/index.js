@@ -14,17 +14,19 @@ export default function OpenTicket({ navigation}) {
     const form = {
         ticket: {
             title: "",
-            requester : {id : ""},
+            requester : {userId : "1"},
             content: "",
-            priority: "1",
-            status: "open",
+            priority: {priorityId: "1"},
+            status: {statusId: "1"},
             openingDate: new Date(),
             modificationDate: new Date(),
-            department: {id: "1"},
-            teamUser: {id: "1"},
+            department: {departmentId: "1"},
+            teamUser: {teamUserId: "1"},
         },
         access_token: access_token
-    }
+    }   
+
+    // send multipart file react native
 
     async function handleCreateTicket() {
         setLoading(true);

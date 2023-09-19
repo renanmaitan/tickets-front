@@ -1,6 +1,6 @@
 export async function signIn({ username, password }) {
     try {
-        const response = await fetch('http://192.168.0.12:8080/api/auth/login', {
+        const response = await fetch('http://172.17.104.46:8080/api/auth/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -10,14 +10,13 @@ export async function signIn({ username, password }) {
                 "password": password
             })
         });
-
+        const status = response.status;
         const json = await response.json();
 
-        if (json.access_token != null) {
+        if (status == 200) {
             return json;
-        } else {
-            return false;
-        }
+        } 
+        return false;
     } catch (error) {
         throw error;
     }

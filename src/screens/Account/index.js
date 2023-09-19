@@ -41,11 +41,6 @@ export default function Account() {
             >
                 <Text style={styles.buttonText}>Sair</Text>
             </TouchableOpacity>
-            <TouchableOpacity 
-            style={{marginTop: "5%"}}
-            >
-                <Text style={[styles.buttonText, {color: "red", fontSize: 16, textDecorationLine: "underline"}]}>Excluir Conta</Text>
-            </TouchableOpacity>
 
         </View>
     )
