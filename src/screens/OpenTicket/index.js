@@ -9,7 +9,6 @@ import Loading from "../../Components/Loading";
 
 export default function OpenTicket({ navigation}) {
     const [loading, setLoading] = useState(false);
-    const { access_token } = useContext(AuthContext);
     const [alert, setAlert] = useState("");
     const form = {
         ticket: {
@@ -23,7 +22,7 @@ export default function OpenTicket({ navigation}) {
             department: {departmentId: "1"},
             teamUser: {teamUserId: "1"},
         },
-        access_token: access_token
+        authContext: useContext(AuthContext)
     }   
 
     // send multipart file react native

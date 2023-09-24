@@ -1,6 +1,6 @@
 export async function signIn({ username, password }) {
     try {
-        const response = await fetch('http://172.17.104.46:8080/api/auth/login', {
+        const response = await fetch(`http://192.168.1.107:8080/api/auth/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
