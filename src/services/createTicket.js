@@ -2,7 +2,7 @@ export async function createTicket({ ticket, authContext }) {
     const { refreshToken, access_token, signOut } = authContext;
 
     try {
-        const response = await fetch(`http://192.168.1.107:8080/api/ticket`, {
+        const response = await fetch(`http://172.17.104.0:8080/api/ticket`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

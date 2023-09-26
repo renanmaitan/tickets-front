@@ -1,6 +1,6 @@
 export async function signIn({ username, password }) {
     try {
-        const response = await fetch(`http://192.168.1.107:8080/api/auth/login`, {
+        const response = await fetch(`http://172.17.104.0:8080/api/auth/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -12,6 +12,7 @@ export async function signIn({ username, password }) {
         });
         const status = response.status;
         const json = await response.json();
+        console.log(json);
 
         if (status == 200) {
             return json;
