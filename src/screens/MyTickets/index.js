@@ -1,77 +1,99 @@
-import React from "react";
+import React, {useContext, useEffect, useState} from "react";
 
 import { View, Text, TouchableOpacity, FlatList } from "react-native";
 import styles from "./style";
 import Item from "./Item";
+import { getTicketsByToken } from "../../services/getTicketsByToken";
+import AuthContext from "../../contexts/auth"
+import Loading from "../../Components/Loading";
 
 export default function MyTickets() {
 
-    const DATA = [
-        {
-            id: "1545",
-            title: "Chamado 1dsadsa dasd asd sadd asdsadasda",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam vel elit nulla. Suspendisse viverra maximus urna, at tincidunt lacus placerat non. Curabitur sit amet lobortis augue. Etiam elementum ante urna, sed semper mi vestibulum quis. Cras id finibus odio, id facilisis est. Aenean tristique enim tortor, in convallis justo finibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam vel elit nulla. Suspendisse viverra maximus urna, at tincidunt lacus placerat non. Curabitur sit amet lobortis augue. Etiam elementum ante urna, sed semper mi vestibulum quis. Cras id finibus odio, id facilisis est. Aenean tristique enim tortor, in convallis justo finibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam vel elit nulla. Suspendisse viverra maximus urna, at tincidunt lacus placerat non. Curabitur sit amet lobortis augue. Etiam elementum ante urna, sed semper mi vestibulum quis. Cras id finibus odio, id facilisis est. Aenean tristique enim tortor, in convallis justo finibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam vel elit nulla. Suspendisse viverra maximus urna, at tincidunt lacus placerat non. Curabitur sit amet lobortis augue. Etiam elementum ante urna, sed semper mi vestibulum quis. Cras id finibus odio, id facilisis est. Aenean tristique enim tortor, in convallis justo finibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam vel elit nulla. Suspendisse viverra maximus urna, at tincidunt lacus placerat non. Curabitur sit amet lobortis augue. Etiam elementum ante urna, sed semper mi vestibulum quis. Cras id finibus odio, id facilisis est. Aenean tristique enim tortor, in convallis justo finibus.",
-            status: "Aberto",
-            date: "01/01/2021",
-            first: true,
-        },
-        {
-            id: "2545",
-            title: "Chamado 2",
-            description: "Descrição do chamado 2",
-            status: "Fechado",
-            date: "01/01/2021"
-        },
-        {
-            id: "3545",
-            title: "Chamado 3",
-            description: "Descrição do chamado 3",
-            status: "Resolvido",
-            date: "01/01/2021"
-        },
-        {
-            id: "4545",
-            title: "Chamado 4",
-            description: "Descrição do chamado 4",
-            status: "Aberto",
-            date: "01/01/2021"
-        },
-        {
-            id: "5458",
-            title: "Chamado 4",
-            description: "Descrição do chamado 4",
-            status: "Aberto",
-            date: "01/01/2021"
-        },
-        {
-            id: "6545",
-            title: "Chamado 4",
-            description: "Descrição do chamado 4",
-            status: "Aberto",
-            date: "01/01/2021"
-        },
-        {
-            id: "7545",
-            title: "Chamado 4",
-            description: "Descrição do chamado 4",
-            status: "Aberto",
-            date: "01/01/2021"
-        },
-        {
-            id: "8545",
-            title: "Chamado 4",
-            description: "Descrição do chamado 4",
-            status: "Aberto",
-            date: "01/01/2021"
-        },
-    ]
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    // {
+    //     "ticketId": 1,
+    //     "title": "Abri",
+    //     "requester": {
+    //         "userId": 1,
+    //         "userName": "Admin",
+    //         "email": "admin@admin.com",
+    //         "cpf": "12345678901",
+    //         "keycloakId": null,
+    //         "phoneNumber": "12345678901",
+    //         "birthDate": "1990-01-01",
+    //         "cep": "12345678",
+    //         "active": true
+    //     },
+    //     "content": "Foi ",
+    //     "priority": {
+    //         "priorityId": 1,
+    //         "priorityName": "Low"
+    //     },
+    //     "status": {
+    //         "statusId": 1,
+    //         "statusName": "Open"
+    //     },
+    //     "openingDate": "2023-09-25",
+    //     "modificationDate": "2023-09-25",
+    //     "department": {
+    //         "departmentId": 1,
+    //         "departmentName": "Pedagógico",
+    //         "active": true
+    //     },
+    //     "teamUser": {
+    //         "teamUserId": 1,
+    //         "team": {
+    //             "teamId": 1,
+    //             "leader": {
+    //                 "userId": 3,
+    //                 "userName": "Rafael Vieira",
+    //                 "email": "rafael@email.com",
+    //                 "cpf": "12345678901",
+    //                 "keycloakId": null,
+    //                 "phoneNumber": "12345678901",
+    //                 "birthDate": "1990-01-01",
+    //                 "cep": "12345678",
+    //                 "active": true
+    //             },
+    //             "active": true,
+    //             "teamName": "Time Rafael "
+    //         },
+    //         "user": {
+    //             "userId": 3,
+    //             "userName": "Rafael Vieira",
+    //             "email": "rafael@email.com",
+    //             "cpf": "12345678901",
+    //             "keycloakId": null,
+    //             "phoneNumber": "12345678901",
+    //             "birthDate": "1990-01-01",
+    //             "cep": "12345678",
+    //             "active": true
+    //         },
+    //         "active": true
+    //     }
+    // },
+    
+    const auth = useContext(AuthContext);
+    
+    useEffect(() =>{
+        getTicketsByToken(auth).then((response) => {
+            setData(response.data.content)
+            setLoading(false)
+        })      
+    }, [])
+
+    if (loading) {
+        return <Loading />
+    }
 
     return (
         <View style={styles.container}>
             <FlatList
-                data={DATA}
+                data={data}
                 renderItem={({ item }) => <Item item={item} />}
-                keyExtractor={item => item.id}
+                keyExtractor={item => item.ticketId}
                 style={{ width: "100%" }}
             />
         </View>
