@@ -6,6 +6,7 @@ import AuthContext from "../../contexts/auth";
 
 import { createTicket } from "../../services/createTicket";
 import Loading from "../../Components/Loading";
+import Select from "../../Components/Select";
 
 export default function OpenTicket({ navigation}) {
     const [loading, setLoading] = useState(false);
@@ -16,14 +17,22 @@ export default function OpenTicket({ navigation}) {
             requester : {userId : "1"},
             content: "",
             priority: {priorityId: "1"},
-            status: {statusId: "1"},
+            status: {statusId: "5"},
             openingDate: new Date(),
             modificationDate: new Date(),
             department: {departmentId: "1"},
             teamUser: {teamUserId: "1"},
         },
         authContext: useContext(AuthContext)
-    }   
+    }
+
+    const departments = [
+        { id: "1", label: "Pedagógico" },
+        { id: "2", label: "Seleção" },
+        { id: "3", label: "Social" },
+        { id: "4", label: "Departamento Pessoal" },
+        { id: "5", label: "Comercial" },
+    ];
 
     // send multipart file react native
 
@@ -67,6 +76,12 @@ export default function OpenTicket({ navigation}) {
                     onChangeText={(text) => form.ticket.content = text}
                     style={styles.input} 
                     placeholder="Descreva seu problema" multiline={true}
+                    />
+                    <Text style={styles.label}>Departamento</Text>
+                    <Select
+                        options={departments}
+                        onChangeSelect={(value) => {form.ticket.department.departmentId = value}}
+                        text="Selecione um departamento"
                     />
                 </View>
                 <View style={styles.alertContainer}><Text style={styles.alert}>{alert}</Text></View>
