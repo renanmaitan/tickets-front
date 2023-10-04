@@ -6,15 +6,17 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     item: {
-        backgroundColor: '#86B862',
+        backgroundColor: '#rgba(235,241,234,1)',
         width: "90%",
         borderRadius: 10,
         marginVertical: "2%",
+        elevation: 5,
+        padding: "4%",
     },
     title: {
         fontSize: 16,
-        color: "#F0F6EF",
-        width: "50%",
+        color: "#333",
+        fontWeight: "bold",
     },
     cardOne:{
         backgroundColor: '#86B862',
@@ -23,25 +25,27 @@ const styles = StyleSheet.create({
         marginVertical: "2%",
         marginTop: "10%",
     },
-    cardTop: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        backgroundColor: "#374C2C",
-        borderTopLeftRadius: 10,
-        borderTopRightRadius: 10,
-        padding: "2%",
-    },
     date: {
         fontSize: 15,
-        color: "#F0F6EF",
+        color: "#333",
+        marginHorizontal: "2%",
     },
     cardBody: {
-        padding: "4%",
-        borderBottomLeftRadius: 10,
-        borderBottomRightRadius: 10,
+    },
+    top:{
+        flexDirection: "row",
         alignItems: "center",
-        marginBottom: "1%",
+        justifyContent: "space-between",
+    },
+    ticketTitle: {
+        fontSize: 16,
+        color: "#000",
+        marginVertical: "1%",
+    },
+    analyst: {
+        fontSize: 14,
+        color: "#333",
+        marginVertical: "1%",
     },
 });
 

@@ -71,7 +71,7 @@ export default function MyTicketsRoutes({ route }) {
   return (
     <MyTicketsTabs.Navigator
       initialRouteName="Ticket"
-      backBehavior="history"
+      backBehavior="none"
       screenOptions={options}
     >
       {screens.map((screen) => (
