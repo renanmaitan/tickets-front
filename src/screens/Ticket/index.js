@@ -15,7 +15,7 @@ export default function Ticket({ route }) {
                     <Text style={styles.date}>Criado em {item.openingDate}</Text>
                     <View style={{ flexDirection: "row" }}>
                         <Text style={styles.status}>Status: </Text>
-                        <Text style={[item.status.statusName == "Open" ? { color: '#BBB500' } : (item.status.statusName == "Closed" ? { color: "red" } : { color: "green" })]}>{item.status.statusName == "Open"? "Aberto": "Fechado"}</Text>
+                        <Text style={[item.status.statusName == "Open" ? { color: '#BBB500' } : (item.status.statusName == "Closed" ? { color: "red" } : { color: "green" })]}>{item.status.statusName == "Open"? "Aberto": (item.status.statusName == "Closed"?"Fechado":"Resolvido")}</Text>
                     </View>
                 </View>
                 <Text style={styles.description}>Título:</Text>

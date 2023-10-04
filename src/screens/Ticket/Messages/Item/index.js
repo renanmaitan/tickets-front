@@ -18,19 +18,19 @@ export default function Item({ item }) {
   return (
     <View style={{ width: "100%" }}>
       <View
-        style={item.role === "requester"? ([styles.containerRequester, {marginStart: sreenWidth-(containerWidth+0.05*sreenWidth)}]) : ([styles.containerAgent, {width: containerWidth}])}
+        style={item.user.userId === item.ticket.requester.userId? ([styles.containerRequester, {marginStart: sreenWidth-(containerWidth+0.05*sreenWidth)}]) : ([styles.containerAgent, {width: containerWidth}])}
       >
         <Text
-          style={item.role === "requester" ? styles.textRequester : styles.textAgent}
+          style={item.user.userId === item.ticket.requester.userId? styles.textRequester : styles.textAgent}
         >
           {item.content}
         </Text>
         <Text
           style={
-            item.role === "requester" ? styles.dateRequester : styles.dateAgent
+            item.user.userId === item.ticket.requester.userId ? styles.dateRequester : styles.dateAgent
           }
         >
-          {item.date.substring(11, 16)}
+          {item.createdAt.substring(11, 16)}
         </Text>
       </View>
     </View>

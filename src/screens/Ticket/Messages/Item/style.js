@@ -4,29 +4,29 @@ const styles = StyleSheet.create({
     containerRequester: {
         backgroundColor: "#D5D5D5",
         justifyContent: "center",
-        margin: "5%",
+        marginTop: "1%",
         padding: 10,
         borderRadius: 10,
         marginStart: "20%",
-        marginBottom: 0,
+        marginBottom: "1%",
+        marginHorizontal: "5%",
     },
     containerAgent: {
         backgroundColor: "#ADD8E6",
         justifyContent: "center",
-        margin: "5%",
+        marginTop: "1%",
         padding: 10,
-        marginBottom: 0,
+        marginBottom: "1%",
         borderRadius: 10,
+        marginHorizontal: "5%",
     },
     textRequester: {
         color: "#000",
-        fontSize: 16,
-        textAlign: "justify",
+        fontSize: 16
     },
     textAgent: {
         color: "#000",
-        fontSize: 16,
-        textAlign: "justify"
+        fontSize: 16
     },
     dateRequester: {
         color: "#000",
@@ -37,16 +37,6 @@ const styles = StyleSheet.create({
         color: "#000",
         fontSize: 12,
         textAlign: "right"
-    },
-    inputMessage: { 
-        width: "95%",
-        backgroundColor: "#fff",
-        borderColor: "#000",
-        borderWidth: 1,
-        fontSize: 16,
-        textAlign: "justify",
-        padding: "3%",
-        borderRadius: 10,
     }
 });
 

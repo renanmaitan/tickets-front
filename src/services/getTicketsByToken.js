@@ -1,7 +1,7 @@
 export async function getTicketsByToken( authContext ) {
     const { refreshToken, access_token, signOut } = authContext;
     const userId = 1;
-    const page = 0, size = 3, sortBy = "department.departmentId", direction = "desc";
+    const page = 0, size = 5, sortBy = "openingDate", direction = "desc";
     
     const IP = process.env.EXPO_PUBLIC_API_URL;
     
