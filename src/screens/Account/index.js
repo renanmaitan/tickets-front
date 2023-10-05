@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useState, useEffect} from "react";
 import { View, Text, TouchableOpacity} from "react-native";
 import { FontAwesome5 } from 'react-native-vector-icons';
 
@@ -6,11 +6,18 @@ import styles from "./style";
 import AuthContext from "../../contexts/auth";
 
 export default function Account() {
-    const { signOut } = useContext(AuthContext);
+    const { signOut, loggedUser } = useContext(AuthContext);
+    const [user, setUser] = useState('Usuário');
 
     function handleSignOut() {
         signOut();
     }
+
+    useEffect(() => {
+        if(loggedUser){
+            setUser(loggedUser.data)
+        }
+    }, [])
 
     return (
         <View style={styles.container}>
@@ -18,14 +25,14 @@ export default function Account() {
             <TouchableOpacity style={styles.containerField}>
                 <View style={styles.labelField}>
                     <Text style={styles.titleField}>Nome</Text>
-                    <Text style={styles.contentField}>Renan</Text>
+                    <Text style={styles.contentField}>{user.userName}</Text>
                 </View>
                 <FontAwesome5 name="chevron-right" color="#B1B1B1" size={20} />
             </TouchableOpacity>
             <TouchableOpacity style={styles.containerField}>
                 <View style={styles.labelField}>
                     <Text style={styles.titleField}>Email</Text>
-                    <Text style={styles.contentField}>renan@email.com</Text>
+                    <Text style={styles.contentField}>{user.email}</Text>
                 </View>
                 <FontAwesome5 name="chevron-right" color="#B1B1B1" size={20} />
             </TouchableOpacity>

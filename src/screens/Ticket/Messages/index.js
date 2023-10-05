@@ -7,11 +7,20 @@ import { getInteractionsByTicket } from "../../../services/getInteractionsByTick
 import AuthContext from "../../../contexts/auth";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-export default function Messages() {
+export default function Messages({ route }) {
 
+    const ticket = route.params.item;
     const authContext = useContext(AuthContext);
+    const {loggedUser} = authContext;
     const [messages, setMessages] = useState([]);
-    const [carregarMais, setCarregarMais] = useState(false);
+    const [form, setForm] = useState({
+        interaction: {
+            content: "",
+            date: new Date(),
+            user: { userId: loggedUser.data.userId },
+            ticket: { ticketId: ticket.ticketId }
+        }
+    });
     // const messages = [
     //     {
     //         "messageId": 1,
@@ -33,76 +42,6 @@ export default function Messages() {
     //         },
     //         "role": "agent"
     //     },
-    //     {
-    //         "messageId": 3,
-    //         "content": "Olá, bom dia!",
-    //         "date": "2021-06-01T08:02:00",
-    //         "user": {
-    //             "userId": 1,
-    //             "name": "João",
-    //         },
-    //         "role": "requester"
-    //     },
-    //     {
-    //         "messageId": 4,
-    //         "content": "Olá, bom dia!",
-    //         "date": "2021-06-01T08:02:30",
-    //         "user": {
-    //             "userId": 2,
-    //             "name": "Maria",
-    //         },
-    //         "role": "agent"
-    //     },
-    //     {
-    //         "messageId": 5,
-    //         "content": "Olá, bom dia!",
-    //         "date": "2021-06-01T08:04:00",
-    //         "user": {
-    //             "userId": 1,
-    //             "name": "João",
-    //         },
-    //         "role": "requester"
-    //     },
-    //     {
-    //         "messageId": 6,
-    //         "content": "Olá, bom dia! Olá, bom dia! Olá, bom dia! Olá, bom dia! Olá, bom dia! Olá, bom dia! Olá, bom dia! Olá, bom dia! Olá, bom dia! Olá, bom dia! Olá, bom dia! Olá, bom dia!",
-    //         "date": "2021-06-01T09:00:00",
-    //         "user": {
-    //             "userId": 2,
-    //             "name": "Maria",
-    //         },
-    //         "role": "agent"
-    //     },
-    //     {
-    //         "messageId": 7,
-    //         "content": "Olá, bom dia!",
-    //         "date": "2021-06-01T09:10:00",
-    //         "user": {
-    //             "userId": 1,
-    //             "name": "João",
-    //         },
-    //         "role": "requester"
-    //     },
-    //     {
-    //         "messageId": 8,
-    //         "content": "Olá, bom dia!",
-    //         "date": "2021-06-01T09:20:00",
-    //         "user": {
-    //             "userId": 2,
-    //             "name": "Maria",
-    //         },
-    //         "role": "agent"
-    //     },
-    //     {
-    //         "messageId": 9,
-    //         "content": "Olá, bom dia!",
-    //         "date": "2021-06-01T09:30:00",
-    //         "user": {
-    //             "userId": 1,
-    //             "name": "João",
-    //         },
-    //         "role": "requester"
-    //     }
     // ]
 
     const hanldeGetInteractions = async () => {
@@ -110,28 +49,25 @@ export default function Messages() {
         setMessages(response.data);
     }
 
-    const form = {
-        interaction: {
-            content: "",
-            date: new Date(),
-            user: { userId: "1" },
-            ticket: { ticketId: "1" }
-        }
-    }
-
     useEffect(() => {
         hanldeGetInteractions();
-    }, [carregarMais])
+    }, [messages])
 
-    //indentificar o scroll para baixo e carregar mais mensagens
-    const handleScroll = (event) => {
-        const scrollPosition = event.nativeEvent.contentOffset.y;
-        const scrollHeight = event.nativeEvent.contentSize.height;
-        const screenHeight = event.nativeEvent.layoutMeasurement.height;
-        if (scrollPosition < 100 && scrollHeight > screenHeight) {
-            setCarregarMais(true);
+    async function handleCreateInteraction() {
+        try {
+            const response = await createInteraction({interaction: form, authContext: authContext});
+            if (response.status == 201) {
+                console.log("interação criada com sucesso");
+            }
+            else {
+                console.log("erro ao criar interação");
+            }
+        }
+        catch (error) {
+            console.error(error);
         }
     }
+
 
     return (
         <View style={styles.container}>
@@ -140,8 +76,6 @@ export default function Messages() {
                 keyExtractor={item => item.interactionId}
                 renderItem={({ item }) => <Item item={item} />}
                 style={styles.flatlist}
-                onScroll={handleScroll}
-                onContentSizeChange={() => setCarregarMais(false)}
             />
 
             <KeyboardAvoidingView
@@ -154,7 +88,10 @@ export default function Messages() {
                         style={styles.inputMessage}
                         placeholder="Digite sua mensagem"
                     />
-                    <TouchableOpacity style={{ marginHorizontal: "4%" }}>
+                    <TouchableOpacity 
+                    style={{ marginHorizontal: "4%" }}
+                    onPress={handleCreateInteraction}
+                    >
                         <Icon name="send" size={26} color={"#182955"} />
                     </TouchableOpacity>
                 </View>

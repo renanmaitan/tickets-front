@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AuthContext from "../../contexts/auth";
 import { View, TouchableOpacity, Text } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
@@ -7,6 +7,16 @@ import styles from "./style";
 import Logo from "./Logo";
 
 export default function Home({navigation}) {
+
+    const { loggedUser } = useContext(AuthContext);
+    const [userName, setUserName] = useState('Usuário');
+
+    useEffect(() => {
+        if(loggedUser){
+            setUserName(loggedUser.data.userName)
+        }
+    }, [loggedUser])
+
     return (
         <View style={styles.container}>
             <LinearGradient
@@ -15,7 +25,7 @@ export default function Home({navigation}) {
                 style={styles.scrollview}
             >
                 <View style={styles.titleContainer}>
-                    <Text style={styles.title} numberOfLines={1}>Whinderson</Text>
+                    <Text style={styles.title} numberOfLines={1}>{userName}</Text>
                     <Logo />
                 </View>
                 <View style={styles.buttonContainer}>

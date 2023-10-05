@@ -1,6 +1,7 @@
-    import React, { createContext, useState, useEffect } from "react";
+    import React, { createContext, useState, useEffect, useContext } from "react";
     import AsyncStorage from "@react-native-async-storage/async-storage";
     import Loading from "../Components/Loading";
+    import { getLoggedUser } from "../services/getLoggedUser";
 
     const AuthContext = createContext({});
     import * as auth from '../services/auth'
@@ -13,6 +14,17 @@
         const [user, setUser] = useState(null);
         const [password, setPassword] = useState(null);
         const [loading, setLoading] = useState(true);
+        const [loggedUser, setLoggedUser] = useState(null);
+
+        const handleGetLoggedUser = async (access_token) => {
+            try {
+                const user = await getLoggedUser({access_token: access_token,refreshToken: refreshToken, signOut: signOut});
+                setLoggedUser(user);
+                return user;
+            } catch (error) {
+                console.error(error);
+            }
+        } 
 
         async function signIn({ username, password }) {
             const response = await auth.signIn({ username, password });
@@ -25,6 +37,8 @@
                 await AsyncStorage.setItem('@refresh_token', response.refresh_token);
                 await AsyncStorage.setItem('@username', username);
                 await AsyncStorage.setItem('@password', password);
+                const user = await handleGetLoggedUser(response.access_token);
+                await AsyncStorage.setItem('@loggedUser', JSON.stringify(user));
                 return true
             } else {
                 return false
@@ -55,14 +69,16 @@
             async function loadStorageData() {
                 const storagedAccessToken = await AsyncStorage.getItem('@access_token');
                 const storagedRefreshToken = await AsyncStorage.getItem('@refresh_token');
-                if (storagedAccessToken && storagedRefreshToken) {
+                const storagedLoggedUser = await AsyncStorage.getItem('@loggedUser');
+                if (storagedAccessToken && storagedRefreshToken && storagedLoggedUser) {
                     setAccessToken(storagedAccessToken);
                     setRefreshToken(storagedRefreshToken);
+                    setLoggedUser(JSON.parse(storagedLoggedUser));
                 }
                 setLoading(false);
             }
             loadStorageData();
-        });
+        }, []);
 
         async function signOut() {
             await AsyncStorage.clear();
@@ -74,7 +90,7 @@
         }
 
         return (
-            <AuthContext.Provider value={{ signed: !!access_token, signIn, access_token, signOut, refresh_token, refreshToken }}>
+            <AuthContext.Provider value={{ signed: !!access_token, signIn, access_token, signOut, refresh_token, refreshToken, loggedUser}}>
                 {children}
             </AuthContext.Provider>
         )

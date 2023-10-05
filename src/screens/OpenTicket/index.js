@@ -8,23 +8,26 @@ import { createTicket } from "../../services/createTicket";
 import Loading from "../../Components/Loading";
 import Select from "../../Components/Select";
 
-export default function OpenTicket({ navigation}) {
+
+export default function OpenTicket({ navigation }) {
     const [loading, setLoading] = useState(false);
     const [alert, setAlert] = useState("");
-    const form = {
+    const { loggedUser } = useContext(AuthContext);
+
+    const [form, setForm] = useState({
         ticket: {
             title: "",
-            requester : {userId : "1"},
+            requester: { userId: loggedUser.data.userId },
             content: "",
-            priority: {priorityId: "1"},
-            status: {statusId: "5"},
+            priority: { priorityId: "1" },
+            status: { statusId: "1" },
             openingDate: new Date(),
             modificationDate: new Date(),
-            department: {departmentId: "1"},
-            teamUser: {teamUserId: "1"},
+            department: { departmentId: "1" },
+            teamUser: { teamUserId: "1" },
         },
-        authContext: useContext(AuthContext)
-    }
+        authContext: useContext(AuthContext),
+    });
 
     const departments = [
         { id: "1", label: "Pedagógico" },
@@ -38,7 +41,8 @@ export default function OpenTicket({ navigation}) {
 
     async function handleCreateTicket() {
         setLoading(true);
-        try{
+        try {
+            console.log(form);
             const response = await createTicket(form);
             if (response.status == 201) {
                 setAlert(null);
@@ -50,7 +54,7 @@ export default function OpenTicket({ navigation}) {
             }
             setLoading(false);
         }
-        catch(error){
+        catch (error) {
             console.error(error);
             setLoading(false);
         }
@@ -65,30 +69,32 @@ export default function OpenTicket({ navigation}) {
             <ScrollView style={styles.scrollview}>
                 <View style={styles.formTop}>
                     <Text style={styles.label}>Título</Text>
-                    <TextInput 
-                    onChangeText={(text) => form.ticket.title = text}
-                    style={styles.input} 
-                    placeholder="Ex: Acesso ao material" 
+                    <TextInput
+                        onChangeText={(text) => setForm({ ...form, ticket: { ...form.ticket, title: text } })}
+                        style={styles.input}
+                        placeholder="Ex: Acesso ao material"
+                        value={form.ticket.title}
                     />
                     {/* requester id */}
                     <Text style={styles.label}>Conteúdo</Text>
-                    <TextInput 
-                    onChangeText={(text) => form.ticket.content = text}
-                    style={styles.input} 
-                    placeholder="Descreva seu problema" multiline={true}
+                    <TextInput
+                        onChangeText={(text) => setForm({ ...form, ticket: { ...form.ticket, content: text } })}
+                        style={styles.input}
+                        placeholder="Descreva seu problema" multiline={true}
+                        value={form.ticket.content}
                     />
                     <Text style={styles.label}>Departamento</Text>
                     <Select
                         options={departments}
-                        onChangeSelect={(value) => {form.ticket.department.departmentId = value}}
+                        onChangeSelect={(value) => setForm({ ...form, ticket: { ...form.ticket, department: { departmentId: value } } })}
                         text="Selecione um departamento"
                     />
                 </View>
                 <View style={styles.alertContainer}><Text style={styles.alert}>{alert}</Text></View>
                 <View style={styles.formBottom}>
-                    <TouchableOpacity 
-                    onPress={handleCreateTicket}
-                    style={styles.button}
+                    <TouchableOpacity
+                        onPress={handleCreateTicket}
+                        style={styles.button}
                     >
                         <Text style={styles.buttonText}>Criar chamado</Text>
                     </TouchableOpacity>

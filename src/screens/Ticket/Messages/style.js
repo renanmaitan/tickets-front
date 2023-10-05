@@ -4,11 +4,12 @@ const styles = StyleSheet.create({
     inputMessage: {
         width: "85%",
         fontSize: 16,
-        textAlign: "left",
-        paddingHorizontal: "2%",
+        paddingLeft: "4%",
         backgroundColor: "#FFF",
         borderRadius: 20,
         padding: "2%",
+        borderColor: "#000",
+        borderWidth: 1,
     },
     container: {
         width: "100%",
@@ -22,7 +23,7 @@ const styles = StyleSheet.create({
     inputContainer: { 
         width: "100%", 
         maxHeight: "30%",
-        backgroundColor: "#D5D5D5",
+        backgroundColor: "transparent",
         padding: "2%",
     },
     input: {
@@ -30,7 +31,7 @@ const styles = StyleSheet.create({
         justifyContent: "space-between", 
         width: "100%", 
         alignItems: "center",
-        marginBottom: "2%"
+        marginBottom: "2%",
     }
 });
 
