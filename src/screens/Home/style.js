@@ -3,11 +3,11 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
     container: {
         width: '100%',
-        backgroundColor: '#F0F6EF',
-        height: '100%',
+        backgroundColor: 'rgb(190, 190, 190)',
         flex: 1,
+        justifyContent: 'center',
     },
-    openTicket:{   
+    openTicket:{
         width: "90%",
         alignItems: "center",
         justifyContent: "center",
@@ -38,12 +38,12 @@ const styles = StyleSheet.create({
     title:{
         fontSize: 20,
         fontFamily : "sans-serif",
-        color: "#FFF",
-        textShadowColor: '#000',
-        textShadowOffset: {width: 0, height: 2},
-        textShadowRadius: 3.84,
-        margin: "5%",
-        width: "40%",
+        color: "#222",
+        // textShadowColor: '#000',
+        // textShadowOffset: {width: 0, height: 2},
+        // textShadowRadius: 3.84,
+        marginTop: "5%",
+        textAlign: "center",
     },
     titleContainer:{
         width: "100%",
@@ -51,22 +51,20 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         justifyContent: "space-between",
         flexDirection: "row",
-        height: "10%",
     },
     buttonContainer:{
         justifyContent: "center",
         width: "100%",
-        height: "100%",
         bottom: "7%",
+        marginTop: "10%",
     },
     logoImg: {
         height: "100%",
-        width: "100%",
-        resizeMode: "contain",  
+        resizeMode: "contain",
     },
     logo: {
-        height: "100%",
-        width: "20%",
+        height: "40%",
+        alignItems: "center",
     },
 });
 

@@ -11,15 +11,17 @@ const options = {
   headerShown: false,
   tabBarStyle: {
     backgroundColor: "#182955",
+    height: 60,
   },
   tabBarActiveTintColor: "#FFF",
-  tabBarInactiveTintColor: "rgba(177, 177, 177, 1)",
+  tabBarInactiveTintColor: "#4B5C88",
   tabBarLabelStyle: {
     fontSize: 14,
   },
   tabBarIconStyle: {
     marginTop: 5,
   },
+  tabBarHideOnKeyboard: true,
 }
 
 export default function MyTicketsRoutes({ route }) {

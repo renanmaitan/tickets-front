@@ -10,9 +10,8 @@ export default function MyTickets() {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    const { loggedUser } = useContext(AuthContext);
-
     const auth = useContext(AuthContext);
+    const { loggedUser } = useContext(AuthContext);
 
     const [page, setPage] = useState(0);
     const [size, setSize] = useState(5);

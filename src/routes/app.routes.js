@@ -16,15 +16,17 @@ const options = {
   headerShown: false,
   tabBarStyle: {
     backgroundColor: "#182955",
+    height: 60,
   },
   tabBarActiveTintColor: "#FFF",
-  tabBarInactiveTintColor: "rgba(177, 177, 177, 1)",
+  tabBarInactiveTintColor: "#4B5C88",
   tabBarLabelStyle: {
     fontSize: 14,
   },
   tabBarIconStyle: {
     marginTop: 5,
   },
+  tabBarHideOnKeyboard: true,
 }
 
 
@@ -39,10 +41,10 @@ function Tabs() {
         name="HomeTab"
         component={Home}
         options={{
-          tabBarLabel: "Ínicio",
           tabBarIcon: ({ color, size }) => (
             <FontAwesome5 name="home" color={color} size={size} />
           ),
+          tabBarLabel: () => { return null }
         }}
       />
       <Tab.Screen
@@ -56,7 +58,7 @@ function Tabs() {
           title: "Configurações da Conta",
           headerStyle: styles.header,
           headerTintColor: '#FFF',
-          tabBarLabel: "Minha Conta",   
+          tabBarLabel: () => { return null }
         }}
       />
     </Tab.Navigator>

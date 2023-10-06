@@ -11,14 +11,15 @@ import Logo from "./Logo"
 export default function Login({ navigation }) {
 
     const [form, setForm] = React.useState({
-        name: '',
+        userName: '',
         email: '',
         birthDate: '',
         cpf: '',
-        phone: '',
+        phoneNumber: '',
         cep: '',
-        password: '',
-        confirmPassword: '',
+        active: true,
+        // password: '',
+        // confirmPassword: '',
     });
 
     const handleForm = (key, value) => {
@@ -68,7 +69,8 @@ export default function Login({ navigation }) {
                         id="name"
                         name="name"
                         placeholder="Nome Completo"
-                        onChangeText={(value) => handleForm('name', value)}
+                        onChangeText={(value) => handleForm('userName', value)}
+                        value={form.userName}
                     />
                     <TextInput
                         style={styles.input}
@@ -77,16 +79,17 @@ export default function Login({ navigation }) {
                         placeholder='E-mail'
                         onChangeText={(value) => handleForm('email', value)}
                         autoCapitalize="none"
+                        value={form.email}
                     />
                     <MaskInput
                         style={styles.input}
                         placeholder="Telefone"
                         onChangeText={(value) => {
-                            handleForm('phone', value)
+                            handleForm('phoneNumber', value)
                         }}
                         keyboardType="numeric"
                         mask={Masks.BRL_PHONE}
-                        value={form.phone}
+                        value={form.phoneNumber}
                         maxLength={15}
                     />
                     <MaskInput
@@ -118,7 +121,7 @@ export default function Login({ navigation }) {
                         mask={Masks.ZIP_CODE}
                         maxLength={9}
                     />
-                    <TextInput
+                    {/* <TextInput
                         style={styles.input}
                         name="password"
                         placeholder='Senha'
@@ -131,7 +134,7 @@ export default function Login({ navigation }) {
                         placeholder='Confirme sua Senha'
                         secureTextEntry={true}
                         onChangeText={(value) => handleForm('confirmPassword', value)}
-                    />
+                    /> */}
                 </View>
                 <View style={styles.boxButton}>
                     <TouchableOpacity
