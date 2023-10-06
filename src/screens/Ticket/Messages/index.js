@@ -16,11 +16,13 @@ export default function Messages({ route }) {
     const [form, setForm] = useState({
         interaction: {
             content: "",
-            date: new Date(),
+            createdAt: new Date(),
             user: { userId: loggedUser.data.userId },
-            ticket: { ticketId: ticket.ticketId }
+            ticket: { ticketId: ticket.ticketId },
+            intern: false
         }
     });
+    const [hasMore, setHasMore] = useState(true);
     // const messages = [
     //     {
     //         "messageId": 1,
@@ -45,22 +47,25 @@ export default function Messages({ route }) {
     // ]
 
     const hanldeGetInteractions = async () => {
-        const response = await getInteractionsByTicket({ ticketId: "1", authContext: authContext });
+        const response = await getInteractionsByTicket({ ticketId: ticket.ticketId, authContext: authContext });
         setMessages(response.data);
     }
 
     useEffect(() => {
         hanldeGetInteractions();
-    }, [messages])
+    }, [hasMore]);
 
     async function handleCreateInteraction() {
+        if (form.interaction.content == "") {
+            return;
+        }
         try {
             const response = await createInteraction({interaction: form, authContext: authContext});
             if (response.status == 201) {
-                console.log("interação criada com sucesso");
+                setForm({ interaction: { ...form.interaction, content: "" } });
             }
             else {
-                console.log("erro ao criar interação");
+                console.log("Erro ao criar interação");
             }
         }
         catch (error) {
@@ -76,6 +81,7 @@ export default function Messages({ route }) {
                 keyExtractor={item => item.interactionId}
                 renderItem={({ item }) => <Item item={item} />}
                 style={styles.flatlist}
+                onEndReached={() => {hasMore ? setHasMore(false) : setHasMore(true)}}
             />
 
             <KeyboardAvoidingView
@@ -87,6 +93,8 @@ export default function Messages({ route }) {
                         multiline={true}
                         style={styles.inputMessage}
                         placeholder="Digite sua mensagem"
+                        onChangeText={text => setForm({ interaction: { ...form.interaction, content: text } })}
+                        value={form.interaction.content}
                     />
                     <TouchableOpacity 
                     style={{ marginHorizontal: "4%" }}

@@ -1,4 +1,7 @@
 export async function getTicketsByToken( {authContext, filters } ) {
+    if (authContext === undefined) {
+        throw new Error("AuthContext is undefined in getTicketsByToken");
+    }
 
     const { refreshToken, access_token, signOut } = authContext;
     const { page, size, sortBy, direction, userId } = filters;

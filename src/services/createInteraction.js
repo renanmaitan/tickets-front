@@ -1,6 +1,9 @@
-export async function createInteraction({ interaction, authContext }) {
+export async function createInteraction({interaction, authContext }) {
+    if (authContext === undefined) {
+        throw new Error("AuthContext is undefined in createInteraction");
+    }
+    
     const { refreshToken, access_token, signOut } = authContext;
-
     const IP = process.env.EXPO_PUBLIC_API_URL;
 
     try {
@@ -10,7 +13,7 @@ export async function createInteraction({ interaction, authContext }) {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + access_token
             },
-            body: JSON.stringify(interaction)
+            body: JSON.stringify(interaction.interaction)
         });
 
 

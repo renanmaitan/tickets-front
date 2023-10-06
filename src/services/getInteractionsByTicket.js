@@ -1,4 +1,8 @@
 export async function getInteractionsByTicket({ ticketId, authContext }) {
+    if (authContext === undefined) {
+        throw new Error("AuthContext is undefined in getInteractionsByTicket");
+    }
+
     const { refreshToken, access_token, signOut } = authContext;
 
     const IP = process.env.EXPO_PUBLIC_API_URL;

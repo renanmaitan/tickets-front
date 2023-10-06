@@ -1,4 +1,8 @@
 export async function createTicket({ ticket, authContext }) {
+    if (authContext === undefined) {
+        throw new Error("AuthContext is undefined in createTicket");
+    }
+
     const { refreshToken, access_token, signOut } = authContext;
 
     const IP = process.env.EXPO_PUBLIC_API_URL;
