@@ -1,30 +1,26 @@
-export async function createTicket({ ticket, authContext }) {
+export async function getRoles( {authContext}  ) {
 
     const { refreshToken, access_token, signOut } = authContext;
-
     const IP = process.env.EXPO_PUBLIC_API_URL;
-
     try {
-        const response = await fetch(`${IP}/api/ticket`, {
-            method: 'POST',
+        const response = await fetch(`${IP}/api/auth/roles`, {
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + access_token
-            },
-            body: JSON.stringify(ticket)
+            }
         });
-
-
+        
         const status = response.status;
-
-        if (status === 201) {
-            return response;
+        if (status === 200) {
+            const json = await response.json();
+            return json;
         } 
         else if (status === 401) {
             const new_token = await refreshToken();
             if (new_token) {
                 authContext = { ...authContext, access_token: new_token}
-                return createTicket({ ticket, authContext });
+                return getRoles(authContext);
             } else {
                 signOut();
                 return null;

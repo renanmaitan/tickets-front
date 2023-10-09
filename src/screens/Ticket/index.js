@@ -19,16 +19,16 @@ export default function Ticket({ route }) {
             <View style={styles.header}>
                 <View style={{ alignItems: "center" }}>
                     <Text style={styles.title}>Chamado {item.ticketId}</Text>
-                    <Text style={styles.date}>Criado em {data}</Text>
+                    <Text style={[styles.date, {marginBottom: 0}]}>Criado em {data}</Text>
+                    <Text style={[styles.date, {marginTop: 0}]}>por {item.requester.userName}</Text>
                     <View style={{ flexDirection: "row" }}>
-                        <Text style={styles.status}>Status: </Text>
                         <Text style={[item.status.statusName == "Open" ? { color: '#BBB500' } : (item.status.statusName == "Closed" ? { color: "red" } : { color: "green" })]}>{item.status.statusName == "Open"? "Aberto": (item.status.statusName == "Closed"?"Fechado":"Resolvido")}</Text>
                     </View>
                 </View>
                 <Text style={styles.description}>Título:</Text>
                 <Text>{item.title}</Text>
                 <Text style={styles.description}>Descrição:</Text>
-                <ScrollView style={{maxHeight: "60%", marginTop:"4%"}}>
+                <ScrollView style={{maxHeight: "60%"}}>
                     <Text style={{textAlign: "justify", marginHorizontal: "4%"}}>{item.content}</Text>
                 </ScrollView>
             </View>

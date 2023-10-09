@@ -1,7 +1,4 @@
 export async function createInteraction({interaction, authContext }) {
-    if (authContext === undefined) {
-        throw new Error("AuthContext is undefined in createInteraction");
-    }
     
     const { refreshToken, access_token, signOut } = authContext;
     const IP = process.env.EXPO_PUBLIC_API_URL;

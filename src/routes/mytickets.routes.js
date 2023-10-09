@@ -20,8 +20,7 @@ const options = {
   },
   tabBarIconStyle: {
     marginTop: 5,
-  },
-  tabBarHideOnKeyboard: true,
+  }
 }
 
 export default function MyTicketsRoutes({ route }) {

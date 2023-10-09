@@ -1,7 +1,4 @@
 export async function getLoggedUser({access_token, refreshToken, signOut}) {
-    if (access_token === undefined) {
-        throw new Error("Access token is undefined in getLoggedUser");
-    }
 
     const IP = process.env.EXPO_PUBLIC_API_URL;
     

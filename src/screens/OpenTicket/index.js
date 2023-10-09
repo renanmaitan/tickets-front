@@ -42,7 +42,6 @@ export default function OpenTicket({ navigation }) {
     async function handleCreateTicket() {
         setLoading(true);
         try {
-            console.log(form);
             const response = await createTicket(form);
             if (response.status == 201) {
                 setAlert(null);

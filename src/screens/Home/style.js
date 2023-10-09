@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
     container: {
         width: '100%',
-        backgroundColor: 'rgb(190, 190, 190)',
+        backgroundColor: '#9DAF8F',
         flex: 1,
         justifyContent: 'center',
     },
@@ -14,9 +14,6 @@ const styles = StyleSheet.create({
         padding: "4%",
         paddingVertical: "10%",
         borderRadius: 10,
-        shadowColor: '#000',
-        shadowOffset: {width: 0, height: 2},
-        shadowRadius: 3.84,
     },
     touchable:{
         width: "100%",

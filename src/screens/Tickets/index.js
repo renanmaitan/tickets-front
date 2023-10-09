@@ -2,11 +2,11 @@ import React, { useContext, useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, FlatList } from "react-native";
 import styles from "./style";
 import Item from "./Item";
-import { getTicketsByToken } from "../../services/getTicketsByToken";
+import { getTicketsByAnalyst } from "../../services/getTicketsByAnalyst";
 import AuthContext from "../../contexts/auth";
 import Loading from "../../Components/Loading";
 
-export default function MyTickets() {
+export default function Tickets() {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -33,7 +33,7 @@ export default function MyTickets() {
         if (!auth.refreshToken) return;
         setLoading(true);
         if (hasMore) {
-            getTicketsByToken(form)
+            getTicketsByAnalyst(form)
                 .then((response) => {
                     if (response.data.content.length > 0) {
                         setData([...data, ...response.data.content]);
@@ -61,9 +61,9 @@ export default function MyTickets() {
 
     useEffect(() => {
         setPage(0)
-        if (auth.refreshToken && page == 0) {
+        if (auth.refreshToken && page==0) {
             global.hasMore = true;
-            getTicketsByToken(form)
+            getTicketsByAnalyst(form)
                 .then((response) => {
                     setData(response.data.content);
                     setPage(page + 1);
