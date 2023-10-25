@@ -4,6 +4,7 @@ import { FontAwesome5 } from "react-native-vector-icons";
 import { getStatus } from "../../../services/getStatus";
 import AuthContext from "../../../contexts/auth";
 import ChangeTicket from "../../../Components/ChangeTicket";
+import { getAnalysts } from "../../../services/getAnalysts";
 
 import styles from "./style";
 
@@ -12,6 +13,14 @@ export default function Options({ route }) {
     const authContext = useContext(AuthContext);
     const [status, setStatus] = useState([]);
     const [optionsStatus, setOptionsStatus] = useState([]);
+    const [analysts, setAnalysts] = useState([]);
+    const [optionsAnalysts, setOptionsAnalysts] = useState([]);
+    const [filters, setFilters] = useState({
+        page: 0,
+        size: 10,
+        sortBy: "userId",
+        direction: "desc"
+    })
 
     handleStatus = () => {
         if (item.status.statusName == "Open") {
@@ -51,6 +60,14 @@ export default function Options({ route }) {
         return statusOptions;
     }
 
+    hanldeAnalystsOptions = () => {
+        let analystsOptions = [];
+        analysts.forEach(item => {
+            analystsOptions.push({ id: item.userId, label: item.userName })
+        })
+        return analystsOptions;
+    }
+
     useEffect(() => {
         getStatus(authContext)
             .then((response) => {
@@ -64,27 +81,31 @@ export default function Options({ route }) {
                 console.log(error);
             }
             )
+        getAnalysts({ authContext, filters })
+            .then((response) => {
+                setAnalysts(response.data.content)
+                const options = hanldeAnalystsOptions();
+                setOptionsAnalysts(options);
+            }
+            )
+            .catch((error) => {
+                console.log(error);
+            }
+            )
     }, [])
+
+
 
     function onChangeSelect(id) {
         console.log(id)
     }
 
-    
-
     return (
         <View style={styles.container}>
             <FontAwesome5 name="cog" color="#B1B1B1" size={100} style={{ marginBottom: "5%", marginTop: "15%" }} />
             <Text style={styles.title}>Alterar dados do chamado</Text>
-            <ChangeTicket title="Status" options={optionsStatus} onChangeSelect={onChangeSelect} text="Alterar Status" />
-
-            <TouchableOpacity style={styles.containerField}>
-                <View style={styles.labelField}>
-                    <Text style={styles.titleField}>Analista Responsável</Text>
-                    <Text style={styles.contentField}>{item.teamUser.user.userName}</Text>
-                </View>
-                <FontAwesome5 name="chevron-right" color="#B1B1B1" size={20} />
-            </TouchableOpacity>
+            <ChangeTicket title="Status" options={optionsStatus} onChangeSelect={onChangeSelect} text="Alterar Status" initial={handleStatus()} />
+            <ChangeTicket title="Analista Responsável" options={optionsAnalysts} onChangeSelect={onChangeSelect} text="Alterar Analista" initial={item.teamUser.user.userName} />
             <TouchableOpacity style={styles.containerField}>
                 <View style={styles.labelField}>
                     <Text style={[styles.titleField, { paddingVertical: "3%" }]}>Senha</Text>

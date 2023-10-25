@@ -3,8 +3,8 @@ import { View, TouchableOpacity, Text, Modal, FlatList, StyleSheet } from "react
 import { FontAwesome5 } from "@expo/vector-icons"
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function ChangeTicket({ title, options, onChangeSelect, text }) {
-    const [txt, setTxt] = useState(text)
+export default function ChangeTicket({ title, options, onChangeSelect, text, initial }) {
+    const [txt, setTxt] = useState(initial)
     const [modalVisible, setModalVisible] = useState(false)
     const [selected, setSelected] = useState(null)
     function renderOption ( item ) {
