@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesome5 } from 'react-native-vector-icons';
 
 import Ticket from "../screens/Ticket";
 import Messages from "../screens/Ticket/Messages";
+import RolesContext from "../contexts/roles";
+import Options from "../screens/Ticket/Options";
 
 const MyTicketsTabs = createBottomTabNavigator()
 
@@ -24,8 +26,17 @@ const options = {
 }
 
 export default function MyTicketsRoutes({ route }) {
-  role = "user"
+  const { roles } = useContext(RolesContext);
+  const [analyst, setAnalyst] = useState(false);
   const item = route.params.item;
+
+  useEffect(() => {
+    if (roles) {
+      if (roles.data.includes('analyst')) {
+        setAnalyst(true);
+      }
+    }
+  }, [roles])
 
   const screens = [
     {
@@ -54,10 +65,10 @@ export default function MyTicketsRoutes({ route }) {
     },
   ];
 
-  if (role === "analyst") {
+  if (analyst) {
     screens.push({
       name: "Opçoes",
-      component: Messages,
+      component: Options,
       initialParams: { item: item },
       options: {
         tabBarIcon: ({ color, size }) => (

@@ -12,7 +12,7 @@ export default function Home({ navigation }) {
     const { loggedUser } = useContext(AuthContext);
     const [userName, setUserName] = useState('Usuário');
     const {roles} = useContext(RolesContext);
-    const [admin, setAdmin] = useState(false);
+    const [analyst, setAnalyst] = useState(false);
 
     useEffect(() => {
         if (loggedUser) {
@@ -23,7 +23,7 @@ export default function Home({ navigation }) {
     useEffect(() => {
         if (roles) {
             if (roles.data.includes('analyst')) {
-                setAdmin(true);
+                setAnalyst(true);
             }
         }
     }, [roles])
@@ -48,7 +48,7 @@ export default function Home({ navigation }) {
                             <Text style={styles.optionText}>Abrir um chamado</Text>
                         </LinearGradient>
                     </TouchableOpacity>
-                    {admin ? (
+                    {analyst ? (
                         <TouchableOpacity style={styles.touchable}
                             onPress={() => navigation.navigate('Tickets')}
                         >
