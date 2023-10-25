@@ -19,8 +19,10 @@ export function RolesProvider({ children }) {
     }
 
     useEffect(() => {
-        handleGetRoles();
-    }, []);
+        if (authContext.refreshToken) {
+            handleGetRoles();
+        }
+    }, [authContext.refreshToken]);
 
     return (
         <RolesContext.Provider value={{ roles }}>

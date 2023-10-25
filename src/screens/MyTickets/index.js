@@ -31,17 +31,15 @@ export default function MyTickets() {
 
     const handleLoadMore = () => {
         if (!auth.refreshToken) return;
-        setLoading(true);
+        setLoading(true)
         if (hasMore) {
-            getTicketsByToken(form)
+            getTicketsByToken({ ...form, filters: { ...form.filters, page: page + 1 } })
                 .then((response) => {
                     if (response.data.content.length > 0) {
                         setData([...data, ...response.data.content]);
                         setLoading(false);
                         if (response.data.content.length < size) {
                             hasMore = false;
-                        } else {
-                            setPage(page + 1);
                         }
                     } else {
                         setLoading(false);
@@ -51,12 +49,15 @@ export default function MyTickets() {
                 .catch((error) => {
                     setLoading(false);
                     hasMore = false;
+                })
+                .finally(() => {
+                    if (hasMore)
+                        setPage(page + 1);
                 });
         }
         else {
             setLoading(false);
         }
-
     };
 
     useEffect(() => {
@@ -66,7 +67,6 @@ export default function MyTickets() {
             getTicketsByToken(form)
                 .then((response) => {
                     setData(response.data.content);
-                    setPage(page + 1);
                 })
                 .finally(() => {
                     setLoading(false);

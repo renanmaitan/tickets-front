@@ -1,4 +1,6 @@
 export async function getInteractionsByTicket({ ticketId, authContext }) {
+    if (!authContext)
+        throw new Error('AuthContext is required in getInteractionsByTicket service');
 
     const { refreshToken, access_token, signOut } = authContext;
 

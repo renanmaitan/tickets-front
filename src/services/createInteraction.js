@@ -1,4 +1,6 @@
 export async function createInteraction({interaction, authContext }) {
+    if (!authContext)
+        throw new Error('AuthContext is required in createInteraction service');
     
     const { refreshToken, access_token, signOut } = authContext;
     const IP = process.env.EXPO_PUBLIC_API_URL;

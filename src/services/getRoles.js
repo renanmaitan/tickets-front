@@ -1,4 +1,6 @@
 export async function getRoles( {authContext}  ) {
+    if (!authContext)
+        throw new Error('AuthContext is required in getRoles service');
 
     const { refreshToken, access_token, signOut } = authContext;
     const IP = process.env.EXPO_PUBLIC_API_URL;
@@ -10,7 +12,6 @@ export async function getRoles( {authContext}  ) {
                 'Authorization': 'Bearer ' + access_token
             }
         });
-        
         const status = response.status;
         if (status === 200) {
             const json = await response.json();

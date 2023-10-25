@@ -1,4 +1,6 @@
 export async function createTicket({ ticket, authContext }) {
+    if (!authContext)
+        throw new Error('AuthContext is required in createTicket service');
 
     const { refreshToken, access_token, signOut } = authContext;
 

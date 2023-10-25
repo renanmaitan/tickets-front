@@ -1,4 +1,7 @@
 export async function getTicketsByToken( {authContext, filters } ) {
+    if (!authContext)
+        throw new Error('AuthContext is required in getTicketsByToken service');
+
     const { refreshToken, access_token, signOut } = authContext;
     const { page, size, sortBy, direction, userId } = filters;
     const IP = process.env.EXPO_PUBLIC_API_URL;

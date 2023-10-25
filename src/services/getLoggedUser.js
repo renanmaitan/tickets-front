@@ -1,5 +1,7 @@
 export async function getLoggedUser({access_token, refreshToken, signOut}) {
-
+    if (!access_token)
+        throw new Error('Access token is required in getLoggedUser service');
+    
     const IP = process.env.EXPO_PUBLIC_API_URL;
     
     try {

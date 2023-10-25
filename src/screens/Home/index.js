@@ -11,15 +11,22 @@ export default function Home({ navigation }) {
 
     const { loggedUser } = useContext(AuthContext);
     const [userName, setUserName] = useState('Usuário');
-    const { roles } = useContext(RolesContext);
-    admin = true
+    const {roles} = useContext(RolesContext);
+    const [admin, setAdmin] = useState(false);
 
     useEffect(() => {
-        console.log(roles)
         if (loggedUser) {
             setUserName(loggedUser.data.userName)
         }
     }, [loggedUser])
+
+    useEffect(() => {
+        if (roles) {
+            if (roles.data.includes('analyst')) {
+                setAdmin(true);
+            }
+        }
+    }, [roles])
 
     return (
         <View style={styles.container}>
