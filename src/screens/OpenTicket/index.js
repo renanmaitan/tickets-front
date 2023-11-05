@@ -7,7 +7,7 @@ import AuthContext from "../../contexts/auth";
 import { createTicket } from "../../services/createTicket";
 import Loading from "../../Components/Loading";
 import Select from "../../Components/Select";
-
+import moment from "moment-timezone";
 
 export default function OpenTicket({ navigation }) {
     const [loading, setLoading] = useState(false);
@@ -21,10 +21,9 @@ export default function OpenTicket({ navigation }) {
             content: "",
             priority: { priorityId: "1" },
             status: { statusId: "1" },
-            openingDate: new Date(),
-            modificationDate: new Date(),
+            openingDate: moment().tz("America/Sao_Paulo").format('YYYY-MM-DDTHH:mm:ss'),
             department: { departmentId: "1" },
-            teamUser: { teamUserId: "1" },
+            category: { categoryId: "1" },
         },
         authContext: useContext(AuthContext),
     });
@@ -40,6 +39,7 @@ export default function OpenTicket({ navigation }) {
     // send multipart file react native
 
     async function handleCreateTicket() {
+        console.log(new Date(moment().tz("America/Sao_Paulo").format()));
         setLoading(true);
         try {
             const response = await createTicket(form);

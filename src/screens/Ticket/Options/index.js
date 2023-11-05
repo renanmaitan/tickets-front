@@ -6,6 +6,7 @@ import AuthContext from "../../../contexts/auth";
 import ChangeTicket from "../../../Components/ChangeTicket";
 import { getAnalysts } from "../../../services/getAnalysts";
 import { putTicket } from "../../../services/putTicket";
+import moment from "moment-timezone";
 
 import styles from "./style";
 
@@ -97,9 +98,26 @@ export default function Options({ route }) {
 
     function onChangeSelectStatus(id) {
         const ticket = {
-            ticketId: item.ticketId,
+            content: item.content,
+            department: {
+                departmentId: item.department.departmentId
+            },
+            modificationDate: moment().tz("America/Sao_Paulo").format('YYYY-MM-DDTHH:mm:ss'),
+            openingDate: item.openingDate,
+            priority: {
+                priorityId: item.priority.priorityId
+            },
+            requester: {
+                userId: item.requester.userId
+            },
             status: {
                 statusId: id
+            },
+            teamUser:  item.teamUser? item.teamUser: null,
+            ticketId: item.ticketId,
+            title: item.title,
+            category: {
+                categoryId: item.category.categoryId
             }
         }
         putTicket({ authContext, ticket })
@@ -113,12 +131,30 @@ export default function Options({ route }) {
             )
     }
     function onChangeSelectAnalyst(id) {
+        console.log(id)
         const ticket = {
-            ticketId: item.ticketId,
             teamUser: {
-                user: {
-                    userId: id
-                }
+                teamUserId: 1
+            },
+            content: item.content,
+            department: {
+                departmentId: item.department.departmentId
+            },
+            modificationDate: moment().tz("America/Sao_Paulo").format('YYYY-MM-DDTHH:mm:ss'),
+            openingDate: item.openingDate,
+            priority: {
+                priorityId: item.priority.priorityId
+            },
+            requester: {
+                userId: item.requester.userId
+            },
+            status: {
+                statusId: item.status.statusId
+            },
+            ticketId: item.ticketId,
+            title: item.title,
+            category: {
+                categoryId: item.category.categoryId
             }
         }
         putTicket({ authContext, ticket })
@@ -137,7 +173,7 @@ export default function Options({ route }) {
             <FontAwesome5 name="cog" color="#B1B1B1" size={100} style={{ marginBottom: "5%", marginTop: "15%" }} />
             <Text style={styles.title}>Alterar dados do chamado</Text>
             <ChangeTicket title="Status" options={optionsStatus} onChangeSelect={onChangeSelectStatus} text="Alterar Status" initial={handleStatus()} />
-            <ChangeTicket title="Analista Responsável" options={optionsAnalysts} onChangeSelect={onChangeSelectAnalyst} text="Alterar Analista" initial={item.teamUser.user.userName} />
+            <ChangeTicket title="Analista Responsável" options={optionsAnalysts} onChangeSelect={onChangeSelectAnalyst} text="Alterar Analista" initial={item.teamUser? item.teamUser.user.userName: "Não Atribuído"} />
             <TouchableOpacity style={styles.containerField}>
                 <View style={styles.labelField}>
                     <Text style={[styles.titleField, { paddingVertical: "3%" }]}>Senha</Text>

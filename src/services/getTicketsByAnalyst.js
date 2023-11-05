@@ -4,15 +4,17 @@ export async function getTicketsByAnalyst( {authContext, filters } ) {
 
     const { refreshToken, access_token, signOut } = authContext;
     const { page, size, sortBy, direction, userId } = filters;
+    const statusList = [1, 2]
     const IP = process.env.EXPO_PUBLIC_API_URL;
     
     try {
         const response = await fetch(`${IP}/api/ticket/analyst/${userId}?page=${page}&size=${size}&sortBy=${sortBy}&direction=${direction}`, {
-            method: 'GET',
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + access_token
-            }
+            },
+            body: JSON.stringify(statusList)
         });
         
         const status = response.status;

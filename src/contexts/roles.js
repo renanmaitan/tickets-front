@@ -19,10 +19,10 @@ export function RolesProvider({ children }) {
     }
 
     useEffect(() => {
-        if (authContext.refreshToken) {
+        if (authContext) {
             handleGetRoles();
         }
-    }, [authContext.refreshToken]);
+    }, [authContext]);
 
     return (
         <RolesContext.Provider value={{ roles }}>
