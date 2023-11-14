@@ -25,7 +25,6 @@ export default function Home({ navigation }) {
             if (roles.data.includes('analyst')) {
                 setAnalyst(true);
             }
-            console.log(roles)
         }
     }, [roles])
 

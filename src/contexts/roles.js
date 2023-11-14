@@ -10,6 +10,7 @@ export function RolesProvider({ children }) {
     const authContext = useContext(AuthContext);
 
     const handleGetRoles = async () => {
+        if (!authContext) return;
         try {
             const roles = await getRoles({authContext: authContext});
             setRoles(roles);

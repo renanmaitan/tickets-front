@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, FlatList } from "react-native";
+import { View, FlatList } from "react-native";
 import styles from "./style";
 import Item from "./Item";
 import { getTicketsByToken } from "../../services/getTicketsByToken";
@@ -29,37 +29,6 @@ export default function MyTickets() {
         },
     };
 
-    const handleLoadMore = () => {
-        if (!auth.refreshToken) return;
-        setLoading(true)
-        if (hasMore) {
-            getTicketsByToken({ ...form, filters: { ...form.filters, page: page + 1 } })
-                .then((response) => {
-                    if (response.data.content.length > 0) {
-                        setData([...data, ...response.data.content]);
-                        setLoading(false);
-                        if (response.data.content.length < size) {
-                            hasMore = false;
-                        }
-                    } else {
-                        setLoading(false);
-                        hasMore = false;
-                    }
-                })
-                .catch((error) => {
-                    setLoading(false);
-                    hasMore = false;
-                })
-                .finally(() => {
-                    if (hasMore)
-                        setPage(page + 1);
-                });
-        }
-        else {
-            setLoading(false);
-        }
-    };
-
     useEffect(() => {
         setPage(0)
         if (auth.refreshToken && page == 0) {
@@ -75,7 +44,7 @@ export default function MyTickets() {
         }
     }, [auth]);
 
-    if (loading && firstLoad) {
+    if (loading || firstLoad) {
         return <Loading />;
     }
 
@@ -83,11 +52,12 @@ export default function MyTickets() {
         <View style={styles.container}>
             <FlatList
                 data={data}
-                renderItem={({ item }) => <Item item={item} />}
-                keyExtractor={(item) => Math.floor(Math.random() * 10000000).toString()}
+                renderItem={({ item }) => {
+                    //console.log("Item:", item);
+                    return <Item item={item} />;
+                 }}
+                keyExtractor={(item) => item.ticketId.toString()}
                 style={{ width: "100%" }}
-                onEndReached={handleLoadMore}
-                onEndReachedThreshold={0.1}
                 ListFooterComponent={loading ? <Loading /> : null}
             />
         </View>

@@ -1,6 +1,6 @@
 export async function getRoles( {authContext}  ) {
     if (!authContext)
-        throw new Error('AuthContext is required in getRoles service');
+        throw new Error('authContext is required');
 
     const { refreshToken, access_token, signOut } = authContext;
     const IP = process.env.EXPO_PUBLIC_API_URL;

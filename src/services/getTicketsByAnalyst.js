@@ -4,7 +4,7 @@ export async function getTicketsByAnalyst( {authContext, filters } ) {
 
     const { refreshToken, access_token, signOut } = authContext;
     const { page, size, sortBy, direction, userId } = filters;
-    const statusList = [1, 2]
+    const statusList = [1, 2, 3]
     const IP = process.env.EXPO_PUBLIC_API_URL;
     
     try {

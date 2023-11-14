@@ -6,9 +6,12 @@ import { StatusBar } from "react-native"
 import {AuthProvider} from "./src/contexts/auth"
 import { RolesProvider } from "./src/contexts/roles"
 import Routes from "./src/routes"
+import ChatScreen from "./src/websocketTest"
 
 export default function App() {
+  const a = false
   return (
+    a? <ChatScreen /> :
     <NavigationContainer>
       <AuthProvider>
         <RolesProvider>

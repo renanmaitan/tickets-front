@@ -25,15 +25,27 @@ export default function Item({ item }) {
     }
 
     let iconStatus = ""
+    let statusName = ""
     if (item.status.statusName === "Open") {
         iconStatus = "timer-sand"
         colorStatus = "#FFD700"
+        statusName = "Aberto"
     }else if (item.status.statusName === "Closed") {
         iconStatus = "lock-check"
         colorStatus = "#FF0000"
-    }else {
+        statusName = "Fechado"
+    }else if (item.status.statusName === "Solved") {
         iconStatus = "check"
         colorStatus = "#008000"
+        statusName = "Resolvido"
+    }else if (item.status.statusName === "Pending") {
+        iconStatus = "timer-sand"
+        colorStatus = "#FFD700"
+        statusName = "Pendente"
+    }else if (item.status.statusName === "On Hold") {
+        iconStatus = "hand-front-left"
+        colorStatus = "#FFD700"
+        statusName = "Atribuído"
     }
 
     const dia = item.openingDate.substring(8, 10)
@@ -63,10 +75,10 @@ export default function Item({ item }) {
                     <Text numberOfLines={1} style={styles.ticketTitle}>{item.title}</Text>
                     <View style={{ flexDirection: "row", alignItems: "center" }}>
                         <Icon name="account-star" size={16} color="#444" style={{marginRight: "1%"}}/>
-                        <Text style={styles.analyst}>{item.teamUser.user.userName}</Text>
+                        <Text style={styles.analyst}>{item.teamUser?.user?.userName || "N/A"}</Text>
                     </View>
                     <View style={{ flexDirection: "row", alignItems: "center", marginVertical: "1%" }}>
-                        <Text>{item.status.statusName == "Open" ? "Aberto" : (item.status.statusName == "Closed" ? "Fechado" : "Resolvido")}</Text>
+                        <Text>{statusName}</Text>
                         <Icon name={iconStatus} size={16} color={colorStatus} style={{ marginLeft: "1%" }} />
                     </View>
                     <Text style={{ textDecorationLine: "underline", textAlign: "center", color: "#333" }}>Clique no card para abrir o chamado</Text>

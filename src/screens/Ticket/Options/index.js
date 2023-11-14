@@ -71,6 +71,7 @@ export default function Options({ route }) {
     }
 
     useEffect(() => {
+        console.log(item)
         getStatus(authContext)
             .then((response) => {
                 setStatus(response.data);
@@ -97,6 +98,7 @@ export default function Options({ route }) {
     }, [])
 
     function onChangeSelectStatus(id) {
+        console.log(id)
         const ticket = {
             content: item.content,
             department: {
@@ -121,17 +123,12 @@ export default function Options({ route }) {
             }
         }
         putTicket({ authContext, ticket })
-            .then((response) => {
-                console.log(response)
-            }
-            )
             .catch((error) => {
                 console.log(error);
             }
             )
     }
     function onChangeSelectAnalyst(id) {
-        console.log(id)
         const ticket = {
             teamUser: {
                 teamUserId: 1
@@ -158,10 +155,6 @@ export default function Options({ route }) {
             }
         }
         putTicket({ authContext, ticket })
-            .then((response) => {
-                console.log(response)
-            }
-            )
             .catch((error) => {
                 console.log(error);
             }
@@ -173,7 +166,7 @@ export default function Options({ route }) {
             <FontAwesome5 name="cog" color="#B1B1B1" size={100} style={{ marginBottom: "5%", marginTop: "15%" }} />
             <Text style={styles.title}>Alterar dados do chamado</Text>
             <ChangeTicket title="Status" options={optionsStatus} onChangeSelect={onChangeSelectStatus} text="Alterar Status" initial={handleStatus()} />
-            <ChangeTicket title="Analista Responsável" options={optionsAnalysts} onChangeSelect={onChangeSelectAnalyst} text="Alterar Analista" initial={item.teamUser? item.teamUser.user.userName: "Não Atribuído"} />
+            <ChangeTicket title="Analista Responsável" options={optionsAnalysts} onChangeSelect={onChangeSelectAnalyst} text="Alterar Analista" initial={item.teamUser?.user?.userName || "Não Atribuído"} />
             <TouchableOpacity style={styles.containerField}>
                 <View style={styles.labelField}>
                     <Text style={[styles.titleField, { paddingVertical: "3%" }]}>Senha</Text>
