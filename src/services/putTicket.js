@@ -16,8 +16,6 @@ export async function putTicket( {authContext, ticket } ) {
         });
         
         const status = response.status;
-        console.log("Resposta: "+JSON.stringify(response))
-        console.log("Ticket: "+JSON.stringify(ticket))
         if (status === 200) {
             const json = await response.json();
             return json;

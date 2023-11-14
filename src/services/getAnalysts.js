@@ -1,6 +1,6 @@
 export async function getAnalysts( {authContext, filters } ) {
     if (!authContext)
-        throw new Error('AuthContext is required in getAnalysts service');
+        return null;
 
     const { refreshToken, access_token, signOut } = authContext;
     const { page, size, sortBy, direction } = filters;
