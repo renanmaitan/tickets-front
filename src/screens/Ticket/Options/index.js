@@ -71,7 +71,6 @@ export default function Options({ route }) {
     }
 
     useEffect(() => {
-        console.log(item)
         getStatus(authContext)
             .then((response) => {
                 setStatus(response.data);
@@ -98,7 +97,6 @@ export default function Options({ route }) {
     }, [])
 
     function onChangeSelectStatus(id) {
-        console.log(id)
         const ticket = {
             content: item.content,
             department: {

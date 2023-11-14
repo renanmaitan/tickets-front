@@ -1,10 +1,9 @@
-export async function getTicketsByAnalyst( {authContext, filters } ) {
+export async function getTicketsByAnalyst( {authContext, filters, statusList } ) {
     if (!authContext)
-        throw new Error('AuthContext is required in getTicketsByAnalyst service');
+        return null
 
     const { refreshToken, access_token, signOut } = authContext;
     const { page, size, sortBy, direction, userId } = filters;
-    const statusList = [1, 2, 3]
     const IP = process.env.EXPO_PUBLIC_API_URL;
     
     try {
