@@ -6,6 +6,7 @@ import { createInteraction } from "../../../services/createInteraction";
 import { getInteractionsByTicket } from "../../../services/getInteractionsByTicket";
 import AuthContext from "../../../contexts/auth";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import moment from "moment-timezone";
 
 export default function Messages({ route }) {
 
@@ -16,7 +17,7 @@ export default function Messages({ route }) {
     const [form, setForm] = useState({
         interaction: {
             content: "",
-            createdAt: new Date(),
+            createdAt: null,
             user: { userId: loggedUser.data.userId },
             ticket: { ticketId: ticket.ticketId },
             intern: false
@@ -59,6 +60,8 @@ export default function Messages({ route }) {
         if (form.interaction.content == "") {
             return;
         }
+        form.interaction.createdAt = moment().tz("America/Sao_Paulo").format('YYYY-MM-DDTHH:mm:ss')
+        messages.push(form.interaction);
         try {
             const response = await createInteraction({interaction: form, authContext: authContext});
             if (response.status == 201) {
