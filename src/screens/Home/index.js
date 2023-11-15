@@ -11,8 +11,10 @@ export default function Home({ navigation }) {
 
     const { loggedUser } = useContext(AuthContext);
     const [userName, setUserName] = useState('Usuário');
-    const {roles} = useContext(RolesContext);
+    const { roles } = useContext(RolesContext);
     const [analyst, setAnalyst] = useState(false);
+    const [requester, setRequester] = useState(false);
+    const [admin, setAdmin] = useState(false);
 
     useEffect(() => {
         if (loggedUser) {
@@ -24,6 +26,12 @@ export default function Home({ navigation }) {
         if (roles) {
             if (roles.data.includes('analyst')) {
                 setAnalyst(true);
+            }
+            if (roles.data.includes('requester')) {
+                setRequester(true);
+            }
+            if (roles.data.includes('admin')) {
+                setAdmin(true);
             }
         }
     }, [roles])
@@ -38,17 +46,19 @@ export default function Home({ navigation }) {
                 {/* <Text style={styles.title} numberOfLines={1}>{userName}</Text> */}
                 <Logo />
                 <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={styles.touchable}
-                        onPress={() => navigation.navigate('OpenTicket')}
-                    >
-                        <LinearGradient
-                            colors={['#182955', '#3f4557']}
-                            style={styles.openTicket}
+                    {requester && (
+                        <TouchableOpacity style={styles.touchable}
+                            onPress={() => navigation.navigate('OpenTicket')}
                         >
-                            <Text style={styles.optionText}>Abrir um chamado</Text>
-                        </LinearGradient>
-                    </TouchableOpacity>
-                    {analyst ? (
+                            <LinearGradient
+                                colors={['#182955', '#3f4557']}
+                                style={styles.openTicket}
+                            >
+                                <Text style={styles.optionText}>Abrir um chamado</Text>
+                            </LinearGradient>
+                        </TouchableOpacity>
+                    )}
+                    {analyst && (
                         <TouchableOpacity style={styles.touchable}
                             onPress={() => navigation.navigate('Tickets')}
                         >
@@ -59,19 +69,55 @@ export default function Home({ navigation }) {
                                 <Text style={styles.optionText}>Chamados</Text>
                             </LinearGradient>
                         </TouchableOpacity>
-                    ) : (
-                        <View></View>
                     )}
-                    <TouchableOpacity style={styles.touchable}
-                        onPress={() => navigation.navigate('MyTickets')}
-                    >
-                        <LinearGradient
-                            colors={['#18554e', '#3f5754']}
-                            style={styles.openTicket}
+                    {requester && (
+                        <TouchableOpacity style={styles.touchable}
+                            onPress={() => navigation.navigate('MyTickets')}
                         >
-                            <Text style={styles.optionText}>Meus Chamados</Text>
-                        </LinearGradient>
-                    </TouchableOpacity>
+                            <LinearGradient
+                                colors={['#18554e', '#3f5754']}
+                                style={styles.openTicket}
+                            >
+                                <Text style={styles.optionText}>Meus Chamados</Text>
+                            </LinearGradient>
+                        </TouchableOpacity>
+                    )}
+                    {admin && (
+                        <TouchableOpacity style={styles.touchable}
+                            onPress={() => navigation.navigate('Cadastro')}
+                        >
+                            <LinearGradient
+                                colors={['#182955', '#3f4557']}
+                                style={styles.openTicket}
+                            >
+                                <Text style={styles.optionText}>Gerar relatório</Text>
+                            </LinearGradient>
+                        </TouchableOpacity>
+                    )}
+                    {admin && (
+                        <TouchableOpacity style={styles.touchable}
+                            onPress={() => navigation.navigate('Cadastro')}
+                        >
+                            <LinearGradient
+                                colors={['#184455', '#3f4e57']}
+                                style={styles.openTicket}
+                            >
+                                <Text style={styles.optionText}>Gerenciar usuário</Text>
+                            </LinearGradient>
+                        </TouchableOpacity>
+                    )}
+                    {admin && (
+                        <TouchableOpacity style={styles.touchable}
+                            onPress={() => navigation.navigate('Cadastro')}
+                        >
+                            <LinearGradient
+                                colors={['#184e55', '#3f5457']}
+                                style={styles.openTicket}
+                            >
+                                <Text style={styles.optionText}>Cadastrar usuário</Text>
+                            </LinearGradient>
+                        </TouchableOpacity>
+                    )}
                 </View>
             </LinearGradient>
         </View>

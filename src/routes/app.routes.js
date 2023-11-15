@@ -9,6 +9,7 @@ import Account from "../screens/Account";
 import MyTickets from "../screens/MyTickets";
 import MyTicketsRoutes from "./mytickets.routes";
 import Tickets from "../screens/Tickets";
+import Cadastro from "../screens/Cadastro";
 
 const AppStack = createStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -91,6 +92,12 @@ export default function AppRoutes() {
       <AppStack.Screen name="Tickets" component={Tickets} options={{
         headerShown: true,
         title: "Chamados",
+        headerStyle: styles.header,
+        headerTintColor: '#FFF',
+      }} />
+      <AppStack.Screen name="Cadastro" component={Cadastro} options={{
+        headerShown: true,
+        title: "Cadastro",
         headerStyle: styles.header,
         headerTintColor: '#FFF',
       }} />

@@ -27,20 +27,12 @@ export default function Account() {
                     <Text style={styles.titleField}>Nome</Text>
                     <Text style={styles.contentField}>{user.userName}</Text>
                 </View>
-                <FontAwesome5 name="chevron-right" color="#B1B1B1" size={20} />
             </TouchableOpacity>
             <TouchableOpacity style={styles.containerField}>
                 <View style={styles.labelField}>
                     <Text style={styles.titleField}>Email</Text>
                     <Text style={styles.contentField}>{user.email}</Text>
                 </View>
-                <FontAwesome5 name="chevron-right" color="#B1B1B1" size={20} />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.containerField}>
-                <View style={styles.labelField}>
-                    <Text style={[styles.titleField, {paddingVertical: "3%"}]}>Senha</Text>
-                </View>
-                <FontAwesome5 name="chevron-right" color="#B1B1B1" size={20} />
             </TouchableOpacity>
             <TouchableOpacity 
             style={styles.button}
