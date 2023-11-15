@@ -61,10 +61,11 @@ export default function Messages({ route }) {
             return;
         }
         form.interaction.createdAt = moment().tz("America/Sao_Paulo").format('YYYY-MM-DDTHH:mm:ss')
-        messages.push(form.interaction);
         try {
             const response = await createInteraction({interaction: form, authContext: authContext});
             if (response.status == 201) {
+                const json = await response.json();
+                messages.push(json.data);
                 setForm({ interaction: { ...form.interaction, content: "" } });
             }
             else {

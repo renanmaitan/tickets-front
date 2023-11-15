@@ -7,8 +7,7 @@ export default StyleSheet.create({
         alignItems: "center",
     },
     button: {
-        backgroundColor: "#B30000",
-        // vermelho escuro #B30000
+        backgroundColor: "#086972",
         width: "90%",
         borderRadius: 5,
         padding: "4%",

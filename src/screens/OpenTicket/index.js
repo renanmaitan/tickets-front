@@ -8,11 +8,14 @@ import { createTicket } from "../../services/createTicket";
 import Loading from "../../Components/Loading";
 import Select from "../../Components/Select";
 import moment from "moment-timezone";
+import { getCategories } from "../../services/getCategories";
 
 export default function OpenTicket({ navigation }) {
     const [loading, setLoading] = useState(false);
     const [alert, setAlert] = useState("");
     const { loggedUser } = useContext(AuthContext);
+    const authContext = useContext(AuthContext);
+    const [optionsCategories, setOptionsCategories] = useState([]);
 
     const [form, setForm] = useState({
         ticket: {
@@ -22,11 +25,19 @@ export default function OpenTicket({ navigation }) {
             priority: { priorityId: "1" },
             status: { statusId: "1" },
             openingDate: moment().tz("America/Sao_Paulo").format('YYYY-MM-DDTHH:mm:ss'),
-            department: { departmentId: "1" },
-            category: { categoryId: "1" },
+            department: { departmentId: null },
+            category: { categoryId: null },
         },
         authContext: useContext(AuthContext),
     });
+
+    function handleCategoriesOptions(data) {
+        const options = [];
+        data.forEach((category) => {
+            options.push({ id: category.categoryId, label: category.categoryName });
+        });
+        return options;
+    }
 
     const departments = [
         { id: "1", label: "Pedagógico" },
@@ -36,10 +47,20 @@ export default function OpenTicket({ navigation }) {
         { id: "5", label: "Comercial" },
     ];
 
-    // send multipart file react native
+    async function onChangeSelectDepartment(id) {
+        setForm({ ...form, ticket: { ...form.ticket, department: { departmentId: id } } })
+        const response = await getCategories(authContext, id);
+        const options = handleCategoriesOptions(response);
+        setOptionsCategories(options);
+    }
 
     async function handleCreateTicket() {
         setLoading(true);
+        if (!form.ticket.title || !form.ticket.content || !form.ticket.department.departmentId || !form.ticket.category.categoryId) {
+            setAlert("Preencha todos os campos!");
+            setLoading(false);
+            return;
+        }
         try {
             const response = await createTicket(form);
             if (response.status == 201) {
@@ -84,9 +105,17 @@ export default function OpenTicket({ navigation }) {
                     <Text style={styles.label}>Departamento</Text>
                     <Select
                         options={departments}
-                        onChangeSelect={(value) => setForm({ ...form, ticket: { ...form.ticket, department: { departmentId: value } } })}
+                        onChangeSelect={(value) => onChangeSelectDepartment(value)}
                         text="Selecione um departamento"
                     />
+                    {form.ticket.department.departmentId && (
+                        <Select
+                            options={optionsCategories}
+                            onChangeSelect={(value) => setForm({ ...form, ticket: { ...form.ticket, category: { categoryId: value } } })}
+                            text="Selecione uma categoria"
+                        />
+                    )
+                    }
                 </View>
                 <View style={styles.alertContainer}><Text style={styles.alert}>{alert}</Text></View>
                 <View style={styles.formBottom}>

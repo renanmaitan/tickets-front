@@ -7,6 +7,8 @@ import ChangeTicket from "../../../Components/ChangeTicket";
 import { getAnalysts } from "../../../services/getAnalysts";
 import { putTicket } from "../../../services/putTicket";
 import moment from "moment-timezone";
+import { getPriorities } from "../../../services/getPriorities";
+import { getCategories } from "../../../services/getCategories";
 
 import styles from "./style";
 
@@ -16,59 +18,40 @@ export default function Options({ route }) {
     const [status, setStatus] = useState([]);
     const [optionsStatus, setOptionsStatus] = useState([]);
     const [analysts, setAnalysts] = useState([]);
+    const [priorities, setPriorities] = useState([]);
     const [optionsAnalysts, setOptionsAnalysts] = useState([]);
+    const [optionsPriorities, setOptionsPriorities] = useState([]);
+    const [categories, setCategories] = useState([]);
+    const [optionsCategories, setOptionsCategories] = useState([]);
     const [filters, setFilters] = useState({
         page: 0,
         size: 10,
         sortBy: "userId",
         direction: "desc"
     })
-
-    handleStatus = () => {
-        if (item.status.statusName == "Open") {
-            return "Aberto"
-        } else if (item.status.statusName == "Pending") {
-            return "Pendente"
-        } else if (item.status.statusName == "On Hold") {
-            return "Atribuído"
-        } else if (item.status.statusName == "Solved") {
-            return "Resolvido"
-        } else {
-            return "Fechado"
-        }
-    }
-
-    handlePriority = () => {
-        if (item.priority.priorityName == "Low") {
-            return "Baixa"
-        } else if (item.priority.priorityName == "Medium") {
-            return "Média"
-        } else {
-            return "Alta"
-        }
-    }
-
-    const priorityOptions = [
-        { id: 1, label: "Baixa" },
-        { id: 2, label: "Média" },
-        { id: 3, label: "Alta" }
-    ]
-
-    handleStatusName = () => {
-        status.forEach(item => {
-            if (item.statusName == "Open") {
-                item.statusName = "Aberto"
-            } else if (item.statusName == "Pending") {
-                item.statusName = "Pendente"
-            } else if (item.statusName == "On Hold") {
-                item.statusName = "Atribuído"
-            } else if (item.statusName == "Solved") {
-                item.statusName = "Resolvido"
-            } else {
-                item.statusName = "Fechado"
+    const [ticket, setTicket] = useState({
+        content: item.content,
+            department: {
+                departmentId: item.department.departmentId
+            },
+            modificationDate: moment().tz("America/Sao_Paulo").format('YYYY-MM-DDTHH:mm:ss'),
+            openingDate: item.openingDate,
+            priority: {
+                priorityId: item.priority.priorityId
+            },
+            requester: {
+                userId: item.requester.userId
+            },
+            status: {
+                statusId: item.status.statusId
+            },
+            teamUser: item.teamUser ? item.teamUser : null,
+            ticketId: item.ticketId,
+            title: item.title,
+            category: {
+                categoryId: item.category.categoryId
             }
-        })
-    }
+    })
 
     handleStatusOptions = () => {
         let statusOptions = [];
@@ -76,6 +59,22 @@ export default function Options({ route }) {
             statusOptions.push({ id: item.statusId, label: item.statusName })
         })
         return statusOptions;
+    }
+
+    handleCategoriesOptions = () => {
+        let categoriesOptions = [];
+        categories.forEach(item => {
+            categoriesOptions.push({ id: item.categoryId, label: item.categoryName })
+        })
+        return categoriesOptions;
+    }
+
+    handlePriorityOptions = () => {
+        let priorityOptions = [];
+        priorities.forEach(item => {
+            priorityOptions.push({ id: item.priorityId, label: item.priorityName })
+        })
+        return priorityOptions;
     }
 
     hanldeAnalystsOptions = () => {
@@ -90,7 +89,6 @@ export default function Options({ route }) {
         getStatus(authContext)
             .then((response) => {
                 setStatus(response.data);
-                handleStatusName();
                 const options = handleStatusOptions();
                 setOptionsStatus(options);
             }
@@ -110,95 +108,46 @@ export default function Options({ route }) {
                 console.log(error);
             }
             )
+        getPriorities(authContext)
+            .then((response) => {
+                setPriorities(response.data);
+                const options = handlePriorityOptions();
+                setOptionsPriorities(options);
+            }
+            )
+            .catch((error) => {
+                console.log(error);
+            }
+            )
+        getCategories(authContext, item.department.departmentId)
+            .then((response) => {
+                setCategories(response);
+                const options = handleCategoriesOptions();
+                setOptionsCategories(options);
+            }
+            )
+            .catch((error) => {
+                console.log(error);
+            }
+            )
     }, [])
 
     function onChangeSelectStatus(id) {
-        const ticket = {
-            content: item.content,
-            department: {
-                departmentId: item.department.departmentId
-            },
-            modificationDate: moment().tz("America/Sao_Paulo").format('YYYY-MM-DDTHH:mm:ss'),
-            openingDate: item.openingDate,
-            priority: {
-                priorityId: item.priority.priorityId
-            },
-            requester: {
-                userId: item.requester.userId
-            },
-            status: {
-                statusId: id
-            },
-            teamUser: item.teamUser ? item.teamUser : null,
-            ticketId: item.ticketId,
-            title: item.title,
-            category: {
-                categoryId: item.category.categoryId
-            }
-        }
-        putTicket({ authContext, ticket })
-            .catch((error) => {
-                console.log(error);
-            }
-            )
+        setTicket({ ...ticket, status: { statusId: id } })
     }
     function onChangeSelectAnalyst(id) {
-        const ticket = {
-            teamUser: {
-                teamUserId: 1 //tratar o id do analista
-            },
-            content: item.content,
-            department: {
-                departmentId: item.department.departmentId
-            },
-            modificationDate: moment().tz("America/Sao_Paulo").format('YYYY-MM-DDTHH:mm:ss'),
-            openingDate: item.openingDate,
-            priority: {
-                priorityId: item.priority.priorityId
-            },
-            requester: {
-                userId: item.requester.userId
-            },
-            status: {
-                statusId: item.status.statusId
-            },
-            ticketId: item.ticketId,
-            title: item.title,
-            category: {
-                categoryId: item.category.categoryId
-            }
-        }
-        putTicket({ authContext, ticket })
-            .catch((error) => {
-                console.log(error);
-            }
-            )
+        setTicket({ ...ticket, teamUser: { user: { userId: id } } })
+    }
+
+    function onChangeSelectCategory(id) {
+        setTicket({ ...ticket, category: { categoryId: id } }) 
     }
 
     function onChangeSelectPriority(id) {
-        const ticket = {
-            content: item.content,
-            department: {
-                departmentId: item.department.departmentId
-            },
-            modificationDate: moment().tz("America/Sao_Paulo").format('YYYY-MM-DDTHH:mm:ss'),
-            openingDate: item.openingDate,
-            priority: {
-                priorityId: id
-            },
-            requester: {
-                userId: item.requester.userId
-            },
-            status: {
-                statusId: item.status.statusId
-            },
-            teamUser: item.teamUser ? item.teamUser : null,
-            ticketId: item.ticketId,
-            title: item.title,
-            category: {
-                categoryId: item.category.categoryId
-            }
-        }
+        setTicket({ ...ticket, priority: { priorityId: id } })
+    }
+
+    function handleSave() {
         putTicket({ authContext, ticket })
             .catch((error) => {
                 console.log(error);
@@ -210,9 +159,13 @@ export default function Options({ route }) {
         <View style={styles.container}>
             <FontAwesome5 name="cog" color="#B1B1B1" size={100} style={{ marginBottom: "5%", marginTop: "15%" }} />
             <Text style={styles.title}>Alterar dados do chamado</Text>
-            <ChangeTicket title="Status" options={optionsStatus} onChangeSelect={onChangeSelectStatus} text="Alterar Status" initial={handleStatus()} />
+            <ChangeTicket title="Status" options={optionsStatus} onChangeSelect={onChangeSelectStatus} text="Alterar Status" initial={item.status.statusName} />
             <ChangeTicket title="Analista Responsável" options={optionsAnalysts} onChangeSelect={onChangeSelectAnalyst} text="Alterar Analista" initial={item.teamUser?.user?.userName || "Não Atribuído"} />
-            <ChangeTicket title="Prioridade" options={priorityOptions} onChangeSelect={onChangeSelectPriority} text="Alterar Prioridade" initial={handlePriority()} />
+            <ChangeTicket title="Prioridade" options={optionsPriorities} onChangeSelect={onChangeSelectPriority} text="Alterar Prioridade" initial={item.priority.priorityName} />
+            <ChangeTicket title="Categoria" options={optionsCategories} onChangeSelect={onChangeSelectCategory} text="Alterar Categoria" initial={item.category.categoryName} />
+            <TouchableOpacity style={styles.button} onPress={() => handleSave()}>
+                <Text style={styles.buttonText}>Salvar</Text>
+            </TouchableOpacity>
         </View>
     )
 }

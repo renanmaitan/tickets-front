@@ -25,28 +25,22 @@ export default function Item({ item }) {
     }
 
     let iconStatus = ""
-    let statusName = ""
     let colorStatus = ""
-    if (item.status.statusName === "Open") {
+    if (item.status.statusName === "Aberto") {
         iconStatus = "timer-sand"
         colorStatus = "#FFD700"
-        statusName = "Aberto"
-    }else if (item.status.statusName === "Closed") {
+    }else if (item.status.statusName === "Fechado") {
         iconStatus = "lock-check"
         colorStatus = "#FF0000"
-        statusName = "Fechado"
-    }else if (item.status.statusName === "Solved") {
+    }else if (item.status.statusName === "Resolvido") {
         iconStatus = "check"
         colorStatus = "#008000"
-        statusName = "Resolvido"
-    }else if (item.status.statusName === "Pending") {
+    }else if (item.status.statusName === "Aguardando Cliente") {
         iconStatus = "timer-sand"
         colorStatus = "#FFD700"
-        statusName = "Pendente"
-    }else if (item.status.statusName === "On Hold") {
+    }else if (item.status.statusName === "Em andamento") {
         iconStatus = "hand-front-left"
         colorStatus = "#FFD700"
-        statusName = "Atribuído"
     }
 
     const dia = item.openingDate.substring(8, 10)
@@ -79,7 +73,7 @@ export default function Item({ item }) {
                         <Text style={styles.analyst}>{item.requester.userName}</Text>
                     </View>
                     <View style={{ flexDirection: "row", alignItems: "center", marginVertical: "1%" }}>
-                        <Text>{statusName}</Text>
+                        <Text>{item.status.statusName}</Text>
                         <Icon name={iconStatus} size={16} color={colorStatus} style={{ marginLeft: "1%" }} />
                     </View>
                     <Text style={{ textDecorationLine: "underline", textAlign: "center", color: "#333" }}>Clique no card para abrir o chamado</Text>

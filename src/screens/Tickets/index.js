@@ -92,15 +92,6 @@ export default function Tickets() {
 
     return (
         <View style={styles.container}>
-            {/* <View style={styles.section}>
-                <Checkbox
-                    value={isChecked}
-                    onValueChange={setChecked}
-                    color={isChecked ? '#182955' : undefined}
-                    style={styles.checkbox}
-                />
-                <Text style={styles.paragraph}>Exibir chamados abertos</Text>
-            </View> */}
             <TouchableOpacity style={styles.containerModal} onPress={() => setModalVisible(true)}>
                 <Text style={styles.txt} numberOfLines={1}>Filtros</Text>
                 <FontAwesome5 name="chevron-down" size={16} color="#555" style={{ alignSelf: "center" }} />
@@ -167,16 +158,17 @@ export default function Tickets() {
                     </TouchableOpacity>
                 </SafeAreaView>
             </Modal>
-            {data.length == 0 && <Text style={styles.noTickets}>Nenhum chamado encontrado</Text>}
-            <FlatList
-                data={data}
-                renderItem={({ item }) => <Item item={item} />}
-                keyExtractor={(item) => Math.floor(Math.random() * 10000000).toString()}
-                style={{ width: "100%" }}
-                onEndReached={handleLoadMore}
-                onEndReachedThreshold={0.1}
-                ListFooterComponent={loading ? <Loading /> : null}
-            />
+            {data.length == 0 ? <Text style={styles.noTickets}>Nenhum chamado encontrado</Text> :
+                <FlatList
+                    data={data}
+                    renderItem={({ item }) => <Item item={item} />}
+                    keyExtractor={(item) => Math.floor(Math.random() * 10000000).toString()}
+                    style={{ width: "100%" }}
+                    onEndReached={handleLoadMore}
+                    onEndReachedThreshold={0.1}
+                    ListFooterComponent={loading ? <Loading /> : null}
+                />
+            }
         </View>
     );
 }

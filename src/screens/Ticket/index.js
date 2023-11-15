@@ -15,19 +15,19 @@ export default function Ticket({ route }) {
     const data = dia + "/" + mes + "/" + ano + " às " + hora + ":" + minuto;
     let statusName = ""
     let colorStatus = ""
-    if (item.status.statusName === "Open") {
+    if (item.status.statusName === "Aberto") {
         colorStatus = "#BBB500"
         statusName = "Aberto"
-    }else if (item.status.statusName === "Closed") {
+    }else if (item.status.statusName === "Fechado") {
         colorStatus = "#FF0000"
         statusName = "Fechado"
-    }else if (item.status.statusName === "Solved") {
+    }else if (item.status.statusName === "Resolvido") {
         colorStatus = "#008000"
         statusName = "Resolvido"
-    }else if (item.status.statusName === "Pending") {
+    }else if (item.status.statusName === "Aguardando Cliente") {
         colorStatus = "#BBB500"
-        statusName = "Pendente"
-    }else if (item.status.statusName === "On Hold") {
+        statusName = "Aguardando Cliente"
+    }else if (item.status.statusName === "Em andamento") {
         colorStatus = "#BBB500"
         statusName = "Atribuído para:"
     }
@@ -40,7 +40,7 @@ export default function Ticket({ route }) {
                     <Text style={[styles.date, {marginBottom: 0}]}>Criado em {data}</Text>
                     <Text style={[styles.date, {marginTop: 0}]}>por {item.requester.userName}</Text>
                     <View style={{ flexDirection: "row" }}>
-                        <Text style={{ color: colorStatus}}>{statusName}<Text style={{color: "black"}}> {item.status.statusName=== "On Hold"?  item.teamUser?.user?.userName || "Nenhum" : ""}</Text></Text>
+                        <Text style={{ color: colorStatus}}>{statusName}<Text style={{color: "black"}}> {item.status.statusName=== "Em andamento"?  item.teamUser?.user?.userName || "Nenhum" : ""}</Text></Text>
                     </View>
                 </View>
                 <Text style={styles.description}>Título:</Text>
