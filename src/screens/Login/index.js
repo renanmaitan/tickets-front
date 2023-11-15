@@ -86,12 +86,6 @@ export default function Login({ navigation }) {
                         style={styles.button}
                     ><Text style={styles.textButton}>Entrar</Text></TouchableOpacity>
                 </View>
-                <View style={styles.boxMessage}>
-                    <Text
-                        onPress={() => navigation.navigate('Cadastro')}
-                        style={styles.message}
-                    >Ainda não possui conta? Cadastre-se</Text>
-                </View>
                 <View style={styles.copyright}>
                     <Text style={styles.copyrightText}>© 2023 - Todos os direitos reservados - ITEMM</Text>
                 </View>

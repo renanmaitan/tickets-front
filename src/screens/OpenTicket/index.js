@@ -39,7 +39,6 @@ export default function OpenTicket({ navigation }) {
     // send multipart file react native
 
     async function handleCreateTicket() {
-        console.log(new Date(moment().tz("America/Sao_Paulo").format()));
         setLoading(true);
         try {
             const response = await createTicket(form);

@@ -139,7 +139,6 @@ export default function Tickets() {
                                             } else {
                                                 setStatusOptions([...statusOptions, item.id])
                                             }
-                                            console.log(statusOptions)
                                         }}
                                         color={item.isChecked ? '#182955' : undefined}
                                         style={styles.checkbox}

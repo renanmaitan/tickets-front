@@ -40,7 +40,7 @@ export default function Ticket({ route }) {
                     <Text style={[styles.date, {marginBottom: 0}]}>Criado em {data}</Text>
                     <Text style={[styles.date, {marginTop: 0}]}>por {item.requester.userName}</Text>
                     <View style={{ flexDirection: "row" }}>
-                        <Text style={{ color: colorStatus}}>{statusName}<Text style={{color: "black"}}> {item.teamUser?.user?.userName || ""}</Text></Text>
+                        <Text style={{ color: colorStatus}}>{statusName}<Text style={{color: "black"}}> {item.status.statusName=== "On Hold"?  item.teamUser?.user?.userName || "Nenhum" : ""}</Text></Text>
                     </View>
                 </View>
                 <Text style={styles.description}>Título:</Text>
