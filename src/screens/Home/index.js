@@ -84,7 +84,7 @@ export default function Home({ navigation }) {
                     )}
                     {admin && (
                         <TouchableOpacity style={styles.touchable}
-                            onPress={() => navigation.navigate('Cadastro')}
+                            onPress={() => navigation.navigate('Relatory')}
                         >
                             <LinearGradient
                                 colors={['#182955', '#3f4557']}
