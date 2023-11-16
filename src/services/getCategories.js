@@ -21,7 +21,7 @@ export async function getCategories( authContext, departmentId  ) {
             const new_token = await refreshToken();
             if (new_token) {
                 authContext =  { ...authContext, access_token: new_token}
-                return getStatus(authContext);
+                return getCategories(authContext, departmentId);
             } else {
                 signOut();
                 return null;

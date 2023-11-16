@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useContext, useState } from "react"
 
 import { View, Text, TextInput, TouchableOpacity, ScrollView, FlatList } from "react-native"
 
@@ -7,20 +7,21 @@ import MaskInput, { Masks } from 'react-native-mask-input'
 import styles from "./style"
 import Title from "./Title/"
 import Logo from "./Logo"
+import { createUser } from "../../services/createUser"
+import AuthContext from "../../contexts/auth"
 
-export default function Login({ navigation }) {
+export default function Cadastro({ navigation }) {
 
     const [form, setForm] = React.useState({
         userName: '',
         email: '',
-        birthDate: '',
         cpf: '',
         phoneNumber: '',
+        birthDate: '',
         cep: '',
         active: true,
-        // password: '',
-        // confirmPassword: '',
     });
+    const authContext = useContext(AuthContext);
 
     const handleForm = (key, value) => {
         setForm((currentForm) => ({
@@ -29,26 +30,49 @@ export default function Login({ navigation }) {
         }));
     };
 
+    const transformToDesiredFormat = (input) => {
+        const [day, month, year] = input.split('/');
+        const formattedDate = `${year}-${month}-${day}`;
+        return formattedDate;
+    };
+
+    const removeSpecialCharacters = (input) => {
+        const onlyNumbers = input.replace(/[^\d]/g, '');
+        return onlyNumbers;
+    }
+
     const submitForm = () => {
-        console.log('submit this form =>', JSON.stringify(form, false, 2));
+        form.birthDate = transformToDesiredFormat(form.birthDate);
+        form.phoneNumber = removeSpecialCharacters(form.phoneNumber);
+        form.cpf = removeSpecialCharacters(form.cpf);
+        form.cep = removeSpecialCharacters(form.cep);
+        if (validation()) {
+            createUser({ user: form, authContext: authContext })
+                .then((response) => {
+                    if (response) {
+                        navigation.navigate('Home')
+                        alert('Cadastro realizado com sucesso!')
+                    }
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        }
     };
 
     const [error, setError] = useState(null)
 
     function validation() {
-        if (user == null || password == null) {
+        if (form.userName == "" || form.email == "" || form.cpf == "" || form.phoneNumber == "" || form.birthDate == "" || form.cep == "") {
             setError('Preencha os campos*')
-        } else if (user == "" || password == "") {
-            setError('Preencha os campos')
-        } else if (user.indexOf(' ') >= 0 || password.indexOf(' ') >= 0) {
-            setError('Não use espaços em branco')
-        } else {
-            setError(null);
-            navigation.reset({
-                index: 0,
-                routes: [{ name: "Home" }],
-            })
+            return false;
         }
+        if (form.userName == null || form.email == null || form.cpf == null || form.phoneNumber == null || form.birthDate == null || form.cep == null) {
+            setError('Preencha os campos')
+            return false;
+        }
+        setError(null);
+        return true;
     }
 
     return (
@@ -121,35 +145,12 @@ export default function Login({ navigation }) {
                         mask={Masks.ZIP_CODE}
                         maxLength={9}
                     />
-                    {/* <TextInput
-                        style={styles.input}
-                        name="password"
-                        placeholder='Senha'
-                        secureTextEntry={true}
-                        onChangeText={(value) => handleForm('password', value)}
-                    />
-                    <TextInput
-                        style={styles.input}
-                        name="confirmPassword"
-                        placeholder='Confirme sua Senha'
-                        secureTextEntry={true}
-                        onChangeText={(value) => handleForm('confirmPassword', value)}
-                    /> */}
                 </View>
                 <View style={styles.boxButton}>
                     <TouchableOpacity
                         onPress={submitForm}
                         style={styles.button}
                     ><Text style={styles.textButton}>Cadastrar</Text></TouchableOpacity>
-                </View>
-                <View style={styles.boxMessage}>
-                    <Text
-                        onPress={() => navigation.navigate('Login')}
-                        style={styles.message}
-                    >Já possui conta? Logar</Text>
-                </View>
-                <View style={styles.copyright}>
-                    <Text style={styles.copyrightText}>© 2023 - Todos os direitos reservados - ITEMM</Text>
                 </View>
             </View>
         </ScrollView>
