@@ -22,8 +22,8 @@ export default function Tickets() {
     const [statusOptions, setStatusOptions] = useState([1, 2, 3]);
     const [options, setOptions] = useState([
         { id: 1, name: "Exibir chamados abertos", isChecked: true },
-        { id: 2, name: "Exibir chamados pendentes", isChecked: true },
-        { id: 3, name: "Exibir chamados atribuídos a você", isChecked: true },
+        { id: 2, name: "Exibir chamados atribuídos a você", isChecked: true },
+        { id: 3, name: "Exibir chamados pendentes", isChecked: true },
         { id: 4, name: "Exibir chamados resolvidos", isChecked: false },
         { id: 5, name: "Exibir chamados fechados", isChecked: false },
     ])

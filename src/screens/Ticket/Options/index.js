@@ -136,7 +136,7 @@ export default function Options({ route }) {
         setTicket({ ...ticket, status: { statusId: id } })
     }
     function onChangeSelectAnalyst(id) {
-        setTicket({ ...ticket, teamUser: { user: { userId: id } } })
+        setTicket({ ...ticket, teamUser: { teamUserId: '1' } })
     }
 
     function onChangeSelectCategory(id) {
