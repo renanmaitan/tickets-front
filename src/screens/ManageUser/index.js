@@ -18,7 +18,9 @@ export default function ManageUser({ navigation }) {
         } else {
             getUserById(authContext, id).then((response) => {
                 if (response) {
-                    console.log(response);
+                    setVisibleId(false);
+                    setId(null);
+                    navigation.navigate('User', { item: response });
                 } else {
                     alert('Usuário não encontrado.');
                 }

@@ -12,6 +12,7 @@ import Tickets from "../screens/Tickets";
 import Cadastro from "../screens/Cadastro";
 import Relatory from "../screens/Relatory";
 import ManageUser from "../screens/ManageUser";
+import User from "../screens/User";
 
 const AppStack = createStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -112,6 +113,12 @@ export default function AppRoutes() {
       <AppStack.Screen name="ManageUser" component={ManageUser} options={{
         headerShown: true,
         title: "Gerenciar Usuários",
+        headerStyle: styles.header,
+        headerTintColor: '#FFF',
+      }} />
+      <AppStack.Screen name="User" component={User} options={{
+        headerShown: true,
+        title: "Usuário",
         headerStyle: styles.header,
         headerTintColor: '#FFF',
       }} />
