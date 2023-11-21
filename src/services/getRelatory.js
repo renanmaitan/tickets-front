@@ -1,7 +1,6 @@
 export async function getRelatory( authContext, data ) {
     if (!authContext)
         throw new Error('AuthContext is required in getRelatory service');
-    console.log(data);
     const {departmentId, startDate, endDate} = data;
     const { refreshToken, access_token, signOut } = authContext;
     const IP = process.env.EXPO_PUBLIC_API_URL;
@@ -15,7 +14,6 @@ export async function getRelatory( authContext, data ) {
             body: JSON.stringify({departmentId, startDate, endDate})
         });
         const status = response.status;
-        console.log(status);
         if (status === 200) {
             const json = await response.json();
             return json;
@@ -24,7 +22,7 @@ export async function getRelatory( authContext, data ) {
             const new_token = await refreshToken();
             if (new_token) {
                 authContext =  { ...authContext, access_token: new_token}
-                return getRelatory(authContext);
+                return getRelatory(authContext, data);
             } else {
                 signOut();
                 return null;

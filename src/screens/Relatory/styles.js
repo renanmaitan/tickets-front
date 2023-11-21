@@ -33,6 +33,9 @@ const styles = StyleSheet.create({
         color: "white",
         fontSize: 15,
     },
+    chart: {
+        alignItems: "center",
+    }
 });
 
 export default styles;

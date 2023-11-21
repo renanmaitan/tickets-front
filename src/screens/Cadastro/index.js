@@ -5,8 +5,6 @@ import { View, Text, TextInput, TouchableOpacity, ScrollView, FlatList } from "r
 import MaskInput, { Masks } from 'react-native-mask-input'
 
 import styles from "./style"
-import Title from "./Title/"
-import Logo from "./Logo"
 import { createUser } from "../../services/createUser"
 import AuthContext from "../../contexts/auth"
 
@@ -82,8 +80,6 @@ export default function Cadastro({ navigation }) {
             contentContainerStyle={styles.scrollview}
         >
             <View style={styles.container}>
-                <Logo />
-                <View><Title /></View>
                 <View>
                     <Text style={styles.error}>{error}</Text>
                 </View>

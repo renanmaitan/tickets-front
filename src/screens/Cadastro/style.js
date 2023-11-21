@@ -57,18 +57,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 16,
     },
-    logoImg: {
-        flex: 1,
-        width: "100%",
-        height: undefined,
-    },
-
-    logo: {
-        marginTop: "2%",
-        width: "40%",
-        alignItems: 'center',
-        aspectRatio: 1,
-    },
     scrollview: {
         backgroundColor: '#F0F6EF',
     },

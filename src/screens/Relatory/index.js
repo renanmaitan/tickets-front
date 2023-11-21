@@ -1,6 +1,6 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import moment from "moment-timezone";
-import { View, Text, TouchableOpacity, TextInput } from "react-native";
+import { View, Text, TouchableOpacity, TextInput, ScrollView } from "react-native";
 import { getRelatory } from "../../services/getRelatory";
 import Select from "../../Components/Select";
 import styles from "./styles";
@@ -8,29 +8,6 @@ import AuthContext from "../../contexts/auth";
 import PieChart from 'react-native-pie-chart';
 
 export default function Relatory() {
-    const [data, setData] = useState({
-        startDate: moment().tz("America/Sao_Paulo").format('YYYY-MM-DDTHH:mm:ss'),
-        endDate: moment().tz("America/Sao_Paulo").format('YYYY-MM-DDTHH:mm:ss'),
-        departmentId: 1
-    })
-    const widthAndHeight = 200
-    const [series, setSeries] = useState([1, 1, 1])
-    const [sliceColor, setSliceColor] = useState(['#fbd203', '#ffb300', '#ff9100'])
-    const [total, setTotal] = useState(0)
-
-    const authContext = useContext(AuthContext);
-    const handleRelatory = async (data) => {
-        setData({
-            ...data,
-            startDate: `${yearStart}-${monthStart}-${dayStart}T${hourStart}:${minuteStart}:00`,
-            endDate: `${year}-${month}-${day}T${hour}:${minute}:00`
-        })
-        const response = await getRelatory(authContext, data);
-        const numbers = response.data
-        setSeries([numbers.assignedTickets, numbers.notAssignedTickets, numbers.onHoldTickets])
-        setTotal(numbers.totalTickets)
-    }
-
     const [dayStart, setDayStart] = useState();
     const [monthStart, setMonthStart] = useState();
     const [yearStart, setYearStart] = useState();
@@ -41,6 +18,85 @@ export default function Relatory() {
     const [year, setYear] = useState();
     const [hour, setHour] = useState();
     const [minute, setMinute] = useState();
+    const [data, setData] = useState({
+        startDate: "",
+        endDate: "",
+        departmentId: null
+    })
+    const widthAndHeight = 200
+    const [total, setTotal] = useState(null)
+    const [chartData, setChartData] = useState({
+        series: [],
+        sliceColor: []
+    })
+    const [assignedTickets, setAssignedTickets] = useState(0)
+    const [notAssignedTickets, setNotAssignedTickets] = useState(0)
+    const [onHoldTickets, setOnHoldTickets] = useState(0)
+
+    const authContext = useContext(AuthContext);
+    const handleRelatory = async (data) => {
+        if (yearStart === undefined || monthStart === undefined || dayStart === undefined || hourStart === undefined || minuteStart === undefined || year === undefined || month === undefined || day === undefined || hour === undefined || minute === undefined) {
+            return alert("Preencha todos os campos")
+        }
+        if(yearStart === "" || monthStart === "" || dayStart === "" || hourStart === "" || minuteStart === "" || year === "" || month === "" || day === "" || hour === "" || minute === "") {
+            return alert("Preencha todos os campos")
+        }
+        if (data.departmentId === null) {
+            return alert("Selecione um departamento")
+        }
+        setData({
+            ...data,
+            startDate: `${yearStart}-${monthStart}-${dayStart}T${hourStart}:${minuteStart}:00`,
+            endDate: `${year}-${month}-${day}T${hour}:${minute}:00`
+        })
+    }
+
+    useEffect(() => {
+        async function Relatory(authContext, data) {
+            const response = await getRelatory(authContext, data);
+            const numbers = response.data
+            setAssignedTickets(numbers.assignedTickets)
+            setNotAssignedTickets(numbers.notAssignedTickets)
+            setOnHoldTickets(numbers.onHoldTickets)
+            const array = [numbers.assignedTickets, numbers.notAssignedTickets, numbers.onHoldTickets]
+            const numbersArray = []
+            let find = []
+            const sliceColor = []
+            array.map((number, i) => {
+                if (number !== 0) {
+                    numbersArray.push(number)
+                    find.push(i)
+                }
+            })
+            if (numbersArray.length === 1) {
+                if (find[0] === 0) {
+                    sliceColor.push('#fbd203')
+                } else if (find[0] === 1) {
+                    sliceColor.push('#ffb300')
+                } else if (find[0] === 2) {
+                    sliceColor.push('#ff9100')
+                }
+            } else if (numbersArray.length === 2) {
+                if (find[0] === 0 && find[1] === 1) {
+                    sliceColor.push('#fbd203', '#ffb300')
+                } else if (find[0] === 0 && find[1] === 2) {
+                    sliceColor.push('#fbd203', '#ff9100')
+                } else if (find[0] === 1 && find[1] === 2) {
+                    sliceColor.push('#ffb300', '#ff9100')
+                }
+            } else if (numbersArray.length === 3) {
+                sliceColor.push('#fbd203', '#ffb300', '#ff9100')
+            }
+            setTotal(numbers.totalTickets)
+            setChartData({
+                series: numbersArray,
+                sliceColor: sliceColor
+            })
+        }
+        if (data.departmentId !== null && data.startDate !== "" && data.endDate !== "") {
+            Relatory(authContext, data)
+        }
+    }, [data])
 
     const departments = [
         { id: "1", label: "Pedagógico" },
@@ -51,6 +107,7 @@ export default function Relatory() {
     ];
 
     return (
+        <ScrollView style={{backgroundColor: "#FFF"}}>
         <View style={styles.container}>
             <Text>Escolha o intervalo de datas</Text>
             <Text>De:</Text>
@@ -158,12 +215,20 @@ export default function Relatory() {
             >
                 <Text style={styles.buttonText}>Gerar relatório</Text>
             </TouchableOpacity>
-            <Text>Relatório</Text>
-            <Text style={{color: "#fbd203"}}>Chamados atribuídos: {series[0]}</Text>
-            <Text style={{color: "#ffb300"}}>Chamados não atribuídos: {series[1]}</Text>
-            <Text style={{color: "#ff9100"}}>Chamados em espera: {series[2]}</Text>
-            <Text style={{marginBottom: "2%"}}>Total de chamados: {total}</Text>
-            <PieChart widthAndHeight={widthAndHeight} series={series} sliceColor={sliceColor} />
+            {total === null ? <Text>Selecione o intervalo de datas</Text> : (
+                <View style={styles.chart}>
+                    <Text>Relatório</Text>
+                    <Text style={{ color: "#fbd203" }}>Chamados atribuídos: {assignedTickets}</Text>
+                    <Text style={{ color: "#ffb300" }}>Chamados abertos (não atribuídos): {notAssignedTickets}</Text>
+                    <Text style={{ color: "#ff9100" }}>Chamados aguardando cliente: {onHoldTickets}</Text>
+                    <Text style={{ marginBottom: "2%" }}>Total de chamados: {total}</Text>
+                    {chartData.series.length !== 0 ?
+                        <PieChart widthAndHeight={widthAndHeight} series={chartData.series} sliceColor={chartData.sliceColor} />
+                        : <Text>Nenhum dado a ser exibido</Text>
+                    }
+                </View>
+            )}
         </View>
+        </ScrollView>
     );
 }
