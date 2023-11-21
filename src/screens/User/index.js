@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, Modal, SafeAreaView, TextInput } from 'react-native';
 import { LinearGradient } from "expo-linear-gradient";
 import { FontAwesome5 } from '@expo/vector-icons';
 import Loading from '../../Components/Loading';
 import { putUserStatus } from '../../services/putUserStatus';
 import AuthContext from '../../contexts/auth';
+import { putUser } from '../../services/putUser';
 
 import styles from "./style";
 
@@ -18,6 +19,19 @@ export default function User({ route, navigation }) {
     const user = route.params.item.data;
     const [loading, setLoading] = useState(false);
     const authContext = useContext(AuthContext);
+    const [visible, setVisible] = useState(false);
+    const [target, setTarget] = useState('');
+    const [id, setId] = useState(null);
+    const [newUser, setNewUser] = useState({
+        "userId": user.userId,
+        "userName": user.userName,
+        "email": user.email,
+        "cpf": user.cpf,
+        "phoneNumber": user.phoneNumber,
+        "birthDate": user.birthDate,
+        "cep": user.cep,
+        "active": user.active
+    });
 
     if (loading) {
         return <Loading />
@@ -29,14 +43,14 @@ export default function User({ route, navigation }) {
             if (response) {
                 setLoading(false);
                 navigation.navigate('ManageUser');
-                alert('Usuário desativado com sucesso.');
+                const string = user.active? "desativado" : "ativado";
+                alert(`Usuário ${string} com sucesso.`);
             } else {
                 setLoading(false);
                 alert('Erro ao desativar usuário.');
             }
         });
     }
-
     const formatDate = (date) => {
         const dateArray = date.split('-');
         const newDate = dateArray[2] + '/' + dateArray[1] + '/' + dateArray[0];
@@ -61,18 +75,99 @@ export default function User({ route, navigation }) {
         return newCpf;
     }
 
+    function handlePutUser() {
+        setLoading(true);
+        putUser(authContext, newUser).then((response) => {
+            if (response) {
+                setLoading(false);
+                navigation.navigate('ManageUser');
+                alert('Usuário alterado com sucesso.');
+            } else {
+                setLoading(false);
+                alert('Erro ao alterar usuário.');
+            }
+        });
+    }
+
+    function changeUserForm(newContent) {
+        if (id === null || id === '') {
+            alert('Digite o id do usuário que deseja encontrar.');
+        } else {
+            if (id === 1) {
+                setNewUser({
+                    ...newUser,
+                    "userName": newContent
+                })
+            } else if (id === 2) {
+                setNewUser({
+                    ...newUser,
+                    "email": newContent
+                })
+            } else if (id === 3) {
+                setNewUser({
+                    ...newUser,
+                    "cpf": newContent
+                })
+            } else if (id === 4) {
+                setNewUser({
+                    ...newUser,
+                    "phoneNumber": newContent
+                })
+            } else if (id === 5) {
+                setNewUser({
+                    ...newUser,
+                    "birthDate": newContent
+                })
+            } else if (id === 6) {
+                setNewUser({
+                    ...newUser,
+                    "cep": newContent
+                })
+            } else {
+                alert('Id inválido.');
+            }
+        }
+    }
+
     const list = [
-        { id: 1, name: "Nome", content: user.userName },
-        { id: 2, name: "Email", content: user.email },
-        { id: 3, name: "CPF", content: formatCpf(user.cpf) },
-        { id: 4, name: "Telefone", content: formatPhone(user.phoneNumber) },
-        { id: 5, name: "Data de Nascimento", content: formatDate(user.birthDate) },
-        { id: 6, name: "CEP", content: formatCep(user.cep) },
-        { id: 7, name: "Senha", content: "********" },
+        { id: 1, name: "Nome", content: newUser.userName },
+        { id: 2, name: "Email", content: newUser.email },
+        { id: 3, name: "CPF", content: formatCpf(newUser.cpf) },
+        { id: 4, name: "Telefone", content: formatPhone(newUser.phoneNumber) },
+        { id: 5, name: "Data de Nascimento", content: formatDate(newUser.birthDate) },
+        { id: 6, name: "CEP", content: formatCep(newUser.cep) },
+        //{ id: 7, name: "Senha", content: "********" },
     ]
 
     return (
         <View style={styles.container}>
+            <Modal
+                animationType="slide"
+                visible={visible}
+                onRequestClose={() => setVisible(false)}
+            >
+                <SafeAreaView>
+                    <View style={styles.headerModal}>
+                        <TouchableOpacity onPress={() => setVisible(false)} style={styles.backModal}>
+                            <FontAwesome5 name="chevron-left" size={20} color="#555" style={{ padding: "1%" }} />
+                        </TouchableOpacity>
+                        <Text style={styles.modalTitle}>Mudar {target}</Text>
+                        <TouchableOpacity onPress={() => setVisible(false)}>
+                            <Text style={styles.modalCancel}>Fechar</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.modalContent}>
+                        <Text>Digite o(a) novo(a) {target}:</Text>
+                        <TextInput
+                            style={styles.modalInput}
+                            placeholder={target}
+                            placeholderTextColor="#555"
+                            onChangeText={(text) => changeUserForm(text)}
+                            autoCapitalize='none'
+                        />
+                    </View>
+                </SafeAreaView>
+            </Modal>
             <ScrollView
                 style={{ width: "100%" }}
             >
@@ -80,11 +175,14 @@ export default function User({ route, navigation }) {
                     colors={['#086972', 'transparent']}
                     style={styles.scrollview}
                 >
-                    <FontAwesome5 name="user-circle" color="#B1B1B1" size={100} style={{ marginBottom: "5%", marginTop: "5%" }} />
                     <Text style={styles.title}>Alterar Dados</Text>
                     {list.map((item) => {
                         return (
-                            <TouchableOpacity key={item.id} style={styles.containerField}>
+                            <TouchableOpacity key={item.id} style={styles.containerField} onPress={() => {
+                                setTarget(item.name);
+                                setVisible(true);
+                                setId(item.id);
+                            }} >
                                 <View style={styles.labelField}>
                                     <Text style={styles.titleField}>{item.name}</Text>
                                     <Text style={styles.contentField}>{item.content}</Text>
@@ -100,12 +198,17 @@ export default function User({ route, navigation }) {
                         </View>
                     </View>
                     <TouchableOpacity
-                        style={styles.button}
+                        style={[styles.button, {backgroundColor: "#086972"}]}
+                        onPress={() => handlePutUser()}
+                    >
+                        <Text style={styles.buttonText}>Salvar Alterações</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={[styles.button, {marginBottom: "15%"}]}
                         onPress={handleDisableUser}
                     >
-                        <Text style={styles.buttonText}>{user.active? "Desativar" : "Ativar"} Usuário</Text>
+                        <Text style={styles.buttonText}>{user.active ? "Desativar" : "Ativar"} Usuário</Text>
                     </TouchableOpacity>
-
                 </LinearGradient>
             </ScrollView>
         </View>
