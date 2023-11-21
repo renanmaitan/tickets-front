@@ -11,6 +11,7 @@ import MyTicketsRoutes from "./mytickets.routes";
 import Tickets from "../screens/Tickets";
 import Cadastro from "../screens/Cadastro";
 import Relatory from "../screens/Relatory";
+import ManageUser from "../screens/ManageUser";
 
 const AppStack = createStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -105,6 +106,12 @@ export default function AppRoutes() {
       <AppStack.Screen name="Relatory" component={Relatory} options={{
         headerShown: true,
         title: "Relatório",
+        headerStyle: styles.header,
+        headerTintColor: '#FFF',
+      }} />
+      <AppStack.Screen name="ManageUser" component={ManageUser} options={{
+        headerShown: true,
+        title: "Gerenciar Usuários",
         headerStyle: styles.header,
         headerTintColor: '#FFF',
       }} />
